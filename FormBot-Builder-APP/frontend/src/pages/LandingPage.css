@@ -1,0 +1,128 @@
+.landing-page {
+  min-height: 100vh;
+  color: #fff;
+  text-align: center;
+  justify-content: center;
+  padding: 10px 10px;
+  display: flex;
+  flex-direction: column; /* Ensures the content is laid out vertically */
+}
+
+.body-top {
+  width: 100%;
+  padding-top: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.body-top img {
+  margin-top: -70px;
+  width: 15%;
+  height: auto;
+}
+
+.header-text {
+  padding: 0px 190px;
+  text-align: center; /* Center the header text */
+}
+
+.header-text h1 {
+  font-size: 45px;
+  background: linear-gradient(to right, #4b83ff, #b794f4);
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.header-text span h1 {
+  margin-top: -20px !important;
+}
+
+.landing-page p {
+  font-size: 15px;
+  margin-bottom: 30px;
+}
+
+.create-formbot-btn {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 15px 30px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.image-container {
+  margin: 80px 0 380px 0;
+  position: relative;
+  height: 300px; /* Set the height for the image container */
+  z-index: 1; /* Ensure it doesn't overlap footer */
+}
+
+.image-container img {
+  max-width: 75% !important;
+  height: auto;
+  border-radius: 5px;
+}
+
+/* Background images with full size and positioned on the left and right */
+.left-image,
+.right-image {
+  position: absolute;
+  top: 0;
+  height: 190% !important;
+  width: 50%;
+  margin-top: 30px;
+}
+
+.left-image {
+  left: 0;
+  z-index: 1;
+  margin-left: 90px; 
+}
+
+.right-image {
+  right: 0;
+  z-index: 1; 
+  margin-right: 90px;
+}
+
+.main-image {
+  position: relative;
+  z-index: 2; 
+  width: 75%; 
+  margin: 0 auto;
+}
+
+/* Media queries for responsive design */
+@media (max-width: 1024px) {
+  .header-text {
+    padding: 0px 50px; /* Adjust padding for medium screens */
+  }
+
+  .body-top img {
+    width: 30%; /* Make image responsive on medium screens */
+  }
+}
+
+@media (max-width: 768px) {
+  .header-text {
+    padding: 0px 20px; /* Further reduce padding for small screens */
+  }
+
+  .header-text h1 {
+    font-size: 30px; /* Adjust font size for small screens */
+  }
+
+  .landing-page p {
+    font-size: 14px; /* Adjust font size for small screens */
+  }
+
+  .create-formbot-btn {
+    padding: 12px 25px; /* Adjust button size for small screens */
+  }
+
+  .image-container img {
+    width: 100%; /* Make the image responsive */ 
+  }
+}
