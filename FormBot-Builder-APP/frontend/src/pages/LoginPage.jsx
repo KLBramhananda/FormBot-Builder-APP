@@ -13,8 +13,8 @@ const LoginPage = () => {
   };
 
  // create new account
-  const createAccount = () => {
-    navigate("");
+  const RegisterPage = () => {
+    navigate("/LoginPage");
   };
 
   const handlePasswordChange = (event) => {
@@ -48,8 +48,9 @@ const LoginPage = () => {
 
           {/* add the new rigister file  */}
           <p>
-            Don’t have an account? <span onClick={createAccount} style={{ color: "#007bff" }}>Register now</span>  
-          </p> 
+            Don’t have an account? <span onClick={() => navigate("/register")}
+            style={{ color: "#007bff", cursor: "pointer" }}>Register now</span>  
+          </p>
 
         </div>
         <div className="bottom-elli">

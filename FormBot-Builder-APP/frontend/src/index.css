@@ -1,8 +1,8 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background-color: #000; /* Black background */
-  color: #fff; /* White text */
+  background-color: #000; 
+  color: #fff; 
   /* overflow: hidden; */
 }
 
@@ -10,8 +10,14 @@ body {
   box-sizing: border-box;
 }
 
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-thumb {
+  background: #4f4f4f;
+}
 
-/* Global responsive styles for forms */
+
 form {
   width: 60%;
   margin: 0 auto;
