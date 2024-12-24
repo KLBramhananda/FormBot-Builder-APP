@@ -1,4 +1,4 @@
-.register-page {
+.Signup-page {
   min-height: 100vh;
   background-color: #000;
   display: flex;
@@ -50,7 +50,7 @@
 .password-wrapper input {
   font-family: Arial, sans-serif;
 }
-.register-container {
+.Signup-container {
   margin-top: -20px;
   margin-left: 200px;
   border-radius: 10px;
@@ -61,18 +61,18 @@
 
 }
 
-.register-container input {
+.Signup-container input {
   width: 100%;
   padding: 8px;
   margin-top: 8px;
   margin-bottom: 20px;
-  border: 1px solid #555;
+  border: 1px solid #414141;
   border-radius: 8px;
   background-color: #222;
   color: #fff;
 }
 
-.register-container button {
+.Signup-container button {
   width: 100%;
   padding: 8px;
   margin: 5px 0;
@@ -84,7 +84,7 @@
   font-weight: 600;
 }
 
-.register-container p {
+.Signup-container p {
   font-size: 13px;
   text-align: center;
   margin: 8px 0;
@@ -92,13 +92,14 @@
 
 .error-message {
   color: red;
+  text-align: left !important;
+  margin-top: -12px !important;
   font-size: 12px;
-  margin-top: -15px;
   margin-bottom: 10px;
 }
 
 
-.register-container p span{
+.Signup-container p span{
   cursor: pointer;
 }
 
@@ -145,6 +146,6 @@ div .elli1 {
 .elli2 {
   position: relative;
   width: 40%;
-  margin-right: 2%;
+  margin-right: 6%;
   margin-top: -260px;
 }

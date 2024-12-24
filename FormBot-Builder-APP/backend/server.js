@@ -1,20 +1,30 @@
-const express = require('express');
-const dotenv = require('dotenv');
-const mongoose = require('mongoose');
+const express = require("express");
+const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
+const cors = require("cors");
+require("dotenv").config(); // Make sure dotenv is required here
 
-// Load environment variables
-dotenv.config();
+const userRoutes = require("./routes/UserRoutes");
 
-// Initialize Express app
 const app = express();
 
-// Routes (Placeholder for now)
-app.get("/", (req, res) => {
-  res.send("Backend is working");
-});
+// Middleware
+app.use(cors());
+app.use(bodyParser.json());
 
-// Start server
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+// Routes
+app.use("/api/users", userRoutes);
+
+// Log the MONGO_URI
+console.log('Mongo URI:', process.env.MONGO_URI); // Check if this logs the correct Mongo URI
+
+// Connect to MongoDB
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => {
+    console.log("Connected to MongoDB");
+    app.listen(5000, () => console.log("Server running on port 5000"));
+  })
+  .catch((err) => {
+    console.log("Error connecting to MongoDB:", err); // Print the exact error if any
+  });
