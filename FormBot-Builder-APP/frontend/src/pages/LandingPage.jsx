@@ -3,10 +3,10 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import "./LandingPage.css";
 
-const LandingPage = ({ onLogin }) => {
+const LandingPage = () => {
   return (
     <div className="landing-page">
-      <Navbar onLogin={onLogin} />
+      <Navbar/>
       <main>
         <div className="body-top">
           <img src="./assets/logos/triangle-logo.png" alt="" />

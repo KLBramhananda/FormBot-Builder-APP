@@ -43,8 +43,33 @@ const SignupPage = () => {
   };
 
   const handleSignUp = async () => {
+    if (!user || user.trim() === "") {
+      setError("Username is required");
+      return;
+    }
+
+    if (!email || email.trim() === "") {
+      setError("Email is required");
+      return;
+    }
+
     if (!email.includes("@") || !email.includes(".com")) {
-      alert("Invalid email");
+      setError("Invalid email format");
+      return;
+    }
+
+    if (!password || password.trim() === "") {
+      setError("Password is required");
+      return;
+    }
+
+    if (!confirmPassword || confirmPassword.trim() === "") {
+      setError("Please confirm your password");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match");
       return;
     }
 
@@ -52,22 +77,17 @@ const SignupPage = () => {
       const response = await fetch("http://localhost:5000/api/users/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ username: user, email, password }),
       });
 
       const data = await response.json();
       if (response.ok) {
-        //alert(data.message);
-        setUser("");
-        setEmail("");
-        setPassword("");
-        setConfirmPassword("");
-        navigate("/createFormPage"); // Navigate to form creation page
+        navigate("/createFormPage");
       } else {
-        alert(data.message); // Show error for existing email
+        setError(data.message);
       }
     } catch (error) {
-      alert("An error occurred during signup. Please try again.");
+      setError("An error occurred during signup. Please try again.");
     }
   };
 
@@ -89,6 +109,7 @@ const SignupPage = () => {
             className="polly2"
           />
         </div>
+
         <div className="Signup-container">
           <label>Username</label>
           <input
@@ -98,6 +119,7 @@ const SignupPage = () => {
             placeholder="Enter a username"
             required
           />
+
           <label>Email</label>
           <input
             type="email"
@@ -106,6 +128,7 @@ const SignupPage = () => {
             placeholder="Enter your email"
             required
           />
+
           <label>Password</label>
           <input
             type="text"
@@ -113,30 +136,34 @@ const SignupPage = () => {
             onChange={handlePasswordChange}
             placeholder="Enter your password"
             required
-          />
-          <label
             style={{
-              color: error ? "red" : "inherit",
+              borderColor: !password && error ? "red" : "inherit",
             }}
-          >
-            Confirm Password
-          </label>
+          />
+
+          <label>Confirm Password</label>
           <input
             type="text"
             value={maskPassword(confirmPassword)}
             onChange={handleConfirmPasswordChange}
-            placeholder="Enter your password"
+            placeholder="Confirm your password"
             style={{
-              borderColor: error ? "red" : "inherit",
+              borderColor:
+                (!confirmPassword || password !== confirmPassword) && error
+                  ? "red"
+                  : "inherit",
             }}
             required
           />
+
           {error && <p className="error-message">{error}</p>}
           <button onClick={handleSignUp}>Sign Up</button>
 
           <p>OR</p>
           <button className="google-btn">
-            <a href="https://www.google.com/"><img src="./assets/logos/google-icon.jpeg" alt="" /></a>
+            <a href="https://www.google.com/">
+              <img src="./assets/logos/google-icon.jpeg" alt="" />
+            </a>
             <span>Sign Up with Google</span>
           </button>
           <p>
