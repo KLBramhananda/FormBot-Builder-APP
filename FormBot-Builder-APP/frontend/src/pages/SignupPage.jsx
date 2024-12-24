@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
+import axios from 'axios';
 import "./SignupPage.css";
 
 const SignupPage = () => {
@@ -47,47 +48,41 @@ const SignupPage = () => {
       setError("Username is required");
       return;
     }
-
+  
     if (!email || email.trim() === "") {
       setError("Email is required");
       return;
     }
-
+  
     if (!email.includes("@") || !email.includes(".com")) {
       setError("Invalid email format");
       return;
     }
-
+  
     if (!password || password.trim() === "") {
       setError("Password is required");
       return;
     }
-
+  
     if (!confirmPassword || confirmPassword.trim() === "") {
       setError("Please confirm your password");
       return;
     }
-
+  
     if (password !== confirmPassword) {
       setError("Passwords do not match");
       return;
     }
-
+  
     try {
-      const response = await fetch("http://localhost:5000/api/users/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username: user, email, password }),
+      await axios.post("http://localhost:5000/api/users/signup", {
+        username: user,
+        email,
+        password
       });
-
-      const data = await response.json();
-      if (response.ok) {
-        navigate("/createFormPage");
-      } else {
-        setError(data.message);
-      }
+      navigate("/createFormPage");
     } catch (error) {
-      setError("An error occurred during signup. Please try again.");
+      setError(error.response?.data?.message || "An error occurred during signup. Please try again.");
     }
   };
 

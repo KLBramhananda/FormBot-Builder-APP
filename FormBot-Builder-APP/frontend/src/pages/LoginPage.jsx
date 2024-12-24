@@ -2,12 +2,14 @@ import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
+import axios from 'axios';
 import "./LoginPage.css";
 
 const LoginPage = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const handleGoBack = () => {
     navigate("/home");
@@ -19,28 +21,21 @@ const LoginPage = () => {
 
   const handleLogin = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/users/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+      const response = await axios.post("http://localhost:5000/api/users/login", {
+        email,
+        password
       });
-
-      const data = await response.json();
-      if (response.ok) {
-       // alert(data.message);
-        if (data.hasFormCreated) {
-          navigate("/yourCustomFormPage"); // Navigate to user's existing form
-        } else {
-          navigate("/createFormPage"); // Navigate to form creation page
-        }
+  
+      if (response.data.hasFormCreated) {
+        navigate("/yourCustomFormPage");
       } else {
-        alert(data.message); // Show error for invalid credentials
+        navigate("/createFormPage");
       }
     } catch (error) {
-      alert("An error occurred during login. Please try again.");
+      setError(error.response?.data?.message || "An error occurred during login. Please try again.");
     }
   };
-
+  
   return (
     <div className="login-page">
       <div className="left-arrow" onClick={handleGoBack}>
