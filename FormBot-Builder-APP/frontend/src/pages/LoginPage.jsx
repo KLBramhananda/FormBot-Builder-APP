@@ -27,7 +27,7 @@ const LoginPage = () => {
 
       const data = await response.json();
       if (response.ok) {
-        alert(data.message);
+       // alert(data.message);
         if (data.hasFormCreated) {
           navigate("/yourCustomFormPage"); // Navigate to user's existing form
         } else {
