@@ -27,12 +27,12 @@ router.post("/login", async (req, res) => {
   try {
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(404).json({ message: "User does not exist." });
+      return res.status(404).json({ message: "User name does not exist. Please check once!" });
     }
 
     // Replace this with actual password comparison logic
     if (user.password !== password) {
-      return res.status(401).json({ message: "Invalid credentials." });
+      return res.status(401).json({ message: "Password is Incorrect!. Please check once!" });
     }
 
     res.status(200).json({ message: "Login successful", userId: user._id, hasFormCreated: user.hasFormCreated });
