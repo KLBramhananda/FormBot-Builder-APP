@@ -1,61 +1,123 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFolderPlus } from "@fortawesome/free-solid-svg-icons";
-import { useNavigate } from 'react-router-dom';
-import Sharemodal from './ShareModal';
+import { useNavigate } from "react-router-dom";
+import ShareModal from "./ShareModal";
 import "./Dashboard.css";
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const [theme, setTheme] = useState("dark");
-  const [folders, setFolders] = useState([]);
-  const [cards, setCards] = useState([]);
-  const [showFolderPrompt, setShowFolderPrompt] = useState(false);
-  const [newFolderName, setNewFolderName] = useState('');
+  const [theme, setTheme] = useState("light");
   const [showShareModal, setShowShareModal] = useState(false);
-  const [currentUser, setCurrentUser] = useState({
-    username: 'Guest',
-    email: ''
+  const [folders, setFolders] = useState(() => {
+    const savedFolders = localStorage.getItem("folders");
+    return savedFolders ? JSON.parse(savedFolders) : [];
   });
 
-  // Simulate getting user data from authentication
+  const [selectedFolder, setSelectedFolder] = useState(null);
+  const [folderContents, setFolderContents] = useState(() => {
+    const savedContents = localStorage.getItem("folderContents");
+    return savedContents ? JSON.parse(savedContents) : {};
+  });
+
+  const [showFolderPrompt, setShowFolderPrompt] = useState(false);
+  const [showTypebotPrompt, setShowTypebotPrompt] = useState(false);
+  const [showDeletePrompt, setShowDeletePrompt] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState(null);
+  const [newFolderName, setNewFolderName] = useState("");
+  const [newTypebotName, setNewTypebotName] = useState("");
+  const [currentUser, setCurrentUser] = useState({
+    username: "Bramhananda K L",
+    email: "",
+  });
+
+  // Save folders and contents to localStorage whenever they change
   useEffect(() => {
-    // Replace this with your actual auth logic
-    const userData = localStorage.getItem('userData');
+    localStorage.setItem("folders", JSON.stringify(folders));
+    localStorage.setItem("folderContents", JSON.stringify(folderContents));
+  }, [folders, folderContents]);
+
+  useEffect(() => {
+    const userData = localStorage.getItem("userData");
     if (userData) {
       setCurrentUser(JSON.parse(userData));
     }
   }, []);
 
   const toggleTheme = () => {
-    const newTheme = theme === "dark" ? "light" : "dark";
+    const newTheme = theme === "light" ? "dark" : "light";
     setTheme(newTheme);
     document.body.className = newTheme;
   };
 
   const handleCreateFolder = () => {
     if (newFolderName.trim()) {
-      setFolders([...folders, newFolderName]);
-      setNewFolderName('');
+      const newFolder = {
+        id: Date.now(),
+        name: newFolderName,
+      };
+      setFolders([...folders, newFolder]);
+      setFolderContents({
+        ...folderContents,
+        [newFolder.id]: [],
+      });
+      setNewFolderName("");
       setShowFolderPrompt(false);
     }
   };
 
-  const handleCreateCard = () => {
-    setCards([...cards, { id: cards.length + 1, name: 'New Typebot' }]);
+  const handleCreateTypebot = () => {
+    if (newTypebotName.trim() && selectedFolder) {
+      const newTypebot = {
+        id: Date.now(),
+        name: newTypebotName,
+      };
+      setFolderContents({
+        ...folderContents,
+        [selectedFolder]: [
+          ...(folderContents[selectedFolder] || []),
+          newTypebot,
+        ],
+      });
+      setNewTypebotName("");
+      setShowTypebotPrompt(false);
+    }
   };
 
-  const handleDeleteCard = (id) => {
-    setCards(cards.filter((card) => card.id !== id));
+  const handleDeleteConfirmation = (type, id) => {
+    setItemToDelete({ type, id });
+    setShowDeletePrompt(true);
   };
 
-  const handleNavigateToSettings = () => {
-    navigate('/settings');
+  const handleDelete = () => {
+    if (itemToDelete.type === "folder") {
+      setFolders(folders.filter((folder) => folder.id !== itemToDelete.id));
+      const { [itemToDelete.id]: deleted, ...rest } = folderContents;
+      setFolderContents(rest);
+    } else if (itemToDelete.type === "typebot" && selectedFolder) {
+      setFolderContents({
+        ...folderContents,
+        [selectedFolder]: folderContents[selectedFolder].filter(
+          (typebot) => typebot.id !== itemToDelete.id
+        ),
+      });
+    }
+    setShowDeletePrompt(false);
+    setItemToDelete(null);
+  };
+
+  const handleDropdownChange = (e) => {
+    const value = e.target.value;
+    if (value === "settings") {
+      navigate("/settings");
+    } else if (value === "logout") {
+      handleLogout();
+    }
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('userData');
-    navigate('/login');
+    localStorage.removeItem("userData");
+    navigate("/login");
   };
 
   return (
@@ -63,22 +125,28 @@ const Dashboard = () => {
       {/* Navbar */}
       <div className="dashboard-navbar">
         <div className="dropdown-container">
-          <select className="workspace-dropdown">
-            <option className='user-dashboard'>{currentUser.username}</option>
-            <option onClick={handleNavigateToSettings}>Settings</option>
-            <option onClick={handleLogout}>Logout</option>
+          <select
+            className="workspace-dropdown"
+            onChange={handleDropdownChange}
+            value="dashboard"
+          >
+            <option value="dashboard">{currentUser.username}</option>
+            <option value="settings">Settings</option>
+            <option value="logout">Logout</option>
           </select>
         </div>
         <div className="navbar-right">
+          <p className="light">Light</p>
           <label className="toggle-switch">
-            <input 
-              type="checkbox" 
+            <input
+              type="checkbox"
               checked={theme === "light"}
               onChange={toggleTheme}
             />
             <span className="slider"></span>
           </label>
-          <button 
+          <p className="dark">Dark</p>
+          <button
             className="share-button"
             onClick={() => setShowShareModal(true)}
           >
@@ -87,7 +155,7 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* Actions */}
+      {/* Dashboard Actions */}
       <div className="dashboard-actions">
         <button
           className="action-button"
@@ -95,14 +163,19 @@ const Dashboard = () => {
         >
           <FontAwesomeIcon icon={faFolderPlus} /> Create a folder
         </button>
-        {folders.map((folder, index) => (
-          <div key={index} className="tab">
-            {folder}
-            <img 
-              src="/assets/images/delete.png" 
-              alt="delete" 
-              onClick={() => {
-                setFolders(folders.filter((_, i) => i !== index));
+        {folders.map((folder) => (
+          <div
+            key={folder.id}
+            className={`tab ${selectedFolder === folder.id ? "selected" : ""}`}
+            onClick={() => setSelectedFolder(folder.id)}
+          >
+            {folder.name}
+            <img
+              src="/assets/images/delete.png"
+              alt="delete"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDeleteConfirmation("folder", folder.id);
               }}
             />
           </div>
@@ -111,43 +184,100 @@ const Dashboard = () => {
 
       {/* Folder Creation Prompt */}
       {showFolderPrompt && (
-        <div className="folder-prompt">
-          <h3>Create New Folder</h3>
-          <input
-            type="text"
-            placeholder="Enter folder name"
-            value={newFolderName}
-            onChange={(e) => setNewFolderName(e.target.value)}
-          />
-          <div className="prompt-buttons">
-            <button onClick={handleCreateFolder}>Done</button>
-            <button onClick={() => setShowFolderPrompt(false)}>Cancel</button>
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h3>Create New Folder</h3>
+            <input
+              type="text"
+              placeholder="Enter folder name"
+              value={newFolderName}
+              onChange={(e) => setNewFolderName(e.target.value)}
+            />
+            <div className="modal-buttons">
+              <button onClick={handleCreateFolder}>Create</button>
+              <button onClick={() => setShowFolderPrompt(false)}>Cancel</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Typebot Creation Prompt */}
+      {showTypebotPrompt && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h3>Create New Typebot</h3>
+            <input
+              type="text"
+              placeholder="Enter typebot name"
+              value={newTypebotName}
+              onChange={(e) => setNewTypebotName(e.target.value)}
+            />
+            <div className="modal-buttons">
+              <button onClick={handleCreateTypebot}>Create</button>
+              <button onClick={() => setShowTypebotPrompt(false)}>
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Prompt */}
+      {showDeletePrompt && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h3>Delete Confirmation</h3>
+            <p>Are you sure you want to delete this {itemToDelete?.type}?</p>
+            <div className="modal-buttons">
+              <button className="confirm-button" onClick={handleDelete}>
+                Confirm
+              </button>
+              <button
+                className="cancel-button"
+                onClick={() => setShowDeletePrompt(false)}
+              >
+                Cancel
+              </button>
+            </div>
           </div>
         </div>
       )}
 
       {/* Cards Section */}
-      <div className="dashboard-cards">
-        <div className="card create-card" onClick={handleCreateCard}>
-          <img src="/assets/images/plus.png" alt="create" />
-          <div className='typebot-name'>Create a typebot</div>
-        </div>
-        {cards.map((card) => (
-          <div key={card.id} className="card">
-            {card.name}
-            <span
-              className="delete-icon"
-              onClick={() => handleDeleteCard(card.id)}
-            >
-              <img src="/assets/images/delete.png" alt="delete" />
-            </span>
+      {selectedFolder ? (
+        <div className="dashboard-cards">
+          <div
+            className="card create-card"
+            onClick={() => setShowTypebotPrompt(true)}
+          >
+            <img src="/assets/images/plus.png" alt="create" />
+            <div className="typebot-name">Create a typebot</div>
           </div>
-        ))}
-      </div>
-
-      {/* Share Modal */}
+          {folderContents[selectedFolder]?.map((typebot) => (
+            <div key={typebot.id} className="card">
+              {typebot.name}
+              <span
+                className="delete-icon"
+                onClick={() => handleDeleteConfirmation("typebot", typebot.id)}
+              >
+                <img src="/assets/images/delete.png" alt="delete" />
+              </span>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="dashboard-cards">
+          <div
+            className="card create-card"
+            onClick={() => setShowFolderPrompt(true)}
+          >
+            <img src="/assets/images/plus.png" alt="create" />
+            <div className="typebot-name">Create a folder</div>
+          </div>
+        </div>
+      )}
       {showShareModal && (
-        <Sharemodal
+        <ShareModal
           onClose={() => setShowShareModal(false)}
           currentUser={currentUser}
         />

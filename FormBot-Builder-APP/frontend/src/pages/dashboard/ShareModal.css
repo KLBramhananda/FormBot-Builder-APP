@@ -1,4 +1,6 @@
-.share-modal-overlay {
+/* Add to your existing CSS file */
+
+.modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -11,102 +13,105 @@
   z-index: 1000;
 }
 
-.share-modal {
+.modal-content {
   background-color: #1e1e1e;
-  padding: 30px;
   border-radius: 8px;
-  width: 90%;
-  max-width: 500px;
-  position: relative;
+  width: 400px;
+  color: #ffffff;
 }
 
-.close-button {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  width: 15px;
-  height: 15px;
-  cursor: pointer;
-  transition: transform 0.3s;
-}
-
-.close-button:hover {
-  transform: scale(1.1);
-}
-
-.invite-section,
-.link-section {
-  margin-bottom: 25px;
-}
-.invite-section{
-  margin-top: 40px;
-}
-
-.section-header {
+.modal-header {
+  padding: 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 15px;
 }
 
-.section-header label,
-.link-section label {
-  font-size: 16px;
+.modal-header h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: normal;
+}
+
+.close-button {
+  background: none;
+  border: none;
   color: #ffffff;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 0;
 }
 
-.section-header select {
-  padding: 8px;
-  border-radius: 5px;
-  border: 1px solid #3e3e3e;
-  background-color: #2e2e2e;
+.modal-body {
+  padding: 20px;
+}
+
+.modal-body input {
+  width: 100%;
+  padding: 12px;
+  background-color: #2d2d2d;
+  border: none;
+  border-radius: 4px;
+  color: #ffffff;
+  margin-bottom: 16px;
+}
+
+.send-invite-button, .copy-link-button {
+  width: 100%;
+  padding: 12px;
+  background-color: #0D6EFD;
+  border: none;
+  border-radius: 4px;
   color: #ffffff;
   cursor: pointer;
+  font-size: 14px;
+  margin-bottom: 24px;
 }
 
-.email-input-container,
-.link-container {
-  display: flex;
-  gap: 10px;
+.link-section h2 {
+  margin-bottom: 16px;
+  font-size: 20px;
+  font-weight: normal;
 }
 
-.email-input-container input,
-.link-container input {
-  flex: 1;
+/* Folder/Card Creation Modal Styles */
+.create-modal {
+  background-color: #1e1e1e;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+}
+
+.create-modal input {
+  width: 100%;
   padding: 12px;
-  border: 1px solid #3e3e3e;
-  border-radius: 5px;
-  background-color: #2e2e2e;
+  background-color: #2d2d2d;
+  border: none;
+  border-radius: 4px;
   color: #ffffff;
+  margin: 16px 0;
+}
+
+.create-modal-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.create-modal-buttons button {
+  padding: 8px 24px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
   font-size: 14px;
 }
 
-.email-input-container button,
-.link-container button {
-  padding: 12px 20px;
-  border: none;
-  border-radius: 5px;
-  background-color: #007bff;
-  color: #ffffff;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: background-color 0.3s;
+.create-modal-buttons .done-button {
+  background: none;
+  color: #0D6EFD;
 }
 
-.email-input-container button:hover,
-.link-container button:hover {
-  background-color: #0056b3;
-}
-
-.link-section {
-  margin-top: 30px;
-}
-
-.link-container {
-  margin-top: 15px;
-}
-
-.link-container input {
-  background-color: #2e2e2e;
+.create-modal-buttons .cancel-button {
+  background: none;
   color: #ffffff;
 }
