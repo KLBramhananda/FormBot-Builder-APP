@@ -1,0 +1,112 @@
+.share-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.share-modal {
+  background-color: #1e1e1e;
+  padding: 30px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+  position: relative;
+}
+
+.close-button {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.close-button:hover {
+  transform: scale(1.1);
+}
+
+.invite-section,
+.link-section {
+  margin-bottom: 25px;
+}
+.invite-section{
+  margin-top: 40px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.section-header label,
+.link-section label {
+  font-size: 16px;
+  color: #ffffff;
+}
+
+.section-header select {
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #3e3e3e;
+  background-color: #2e2e2e;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.email-input-container,
+.link-container {
+  display: flex;
+  gap: 10px;
+}
+
+.email-input-container input,
+.link-container input {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid #3e3e3e;
+  border-radius: 5px;
+  background-color: #2e2e2e;
+  color: #ffffff;
+  font-size: 14px;
+}
+
+.email-input-container button,
+.link-container button {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: #ffffff;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.3s;
+}
+
+.email-input-container button:hover,
+.link-container button:hover {
+  background-color: #0056b3;
+}
+
+.link-section {
+  margin-top: 30px;
+}
+
+.link-container {
+  margin-top: 15px;
+}
+
+.link-container input {
+  background-color: #2e2e2e;
+  color: #ffffff;
+}

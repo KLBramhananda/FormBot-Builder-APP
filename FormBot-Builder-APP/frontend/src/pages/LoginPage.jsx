@@ -12,7 +12,7 @@ const LoginPage = () => {
   const [error, setError] = useState("");
 
   const handleGoBack = () => {
-    navigate("/home");
+    navigate("/");
   };
 
   const handlePasswordChange = (event) => {
@@ -29,7 +29,7 @@ const LoginPage = () => {
       if (response.data.hasFormCreated) {
         navigate("/yourCustomFormPage");
       } else {
-        navigate("/createFormPage");
+        navigate("/DashBoard");
       }
     } catch (error) {
       setError(error.response?.data?.message || "An error occurred during login. Please try again.");

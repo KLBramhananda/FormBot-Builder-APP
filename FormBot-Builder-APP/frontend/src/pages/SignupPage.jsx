@@ -18,7 +18,7 @@ const SignupPage = () => {
   };
 
   const handleGoBack = () => {
-    navigate("/home");
+    navigate("/login");
   };
 
   const handleUserChange = (event) => {
@@ -80,7 +80,7 @@ const SignupPage = () => {
         email,
         password
       });
-      navigate("/createFormPage");
+      navigate("/DashBoard");
     } catch (error) {
       setError(error.response?.data?.message || "An error occurred during signup. Please try again.");
     }

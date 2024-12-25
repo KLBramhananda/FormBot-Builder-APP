@@ -131,6 +131,7 @@
 
 div .bottom-elli{
   margin-top: 525px;
+  padding-top: 32px;
   margin-left: -100PX;
 }
 div .elli1 {
@@ -141,6 +142,6 @@ div .elli1 {
 .elli2 {
   position: relative;
   width: 40%;
-  margin-right: 6%;
+  margin-right: -2%;
   margin-top: -260px;
 }
