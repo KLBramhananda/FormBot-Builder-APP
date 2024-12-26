@@ -58,6 +58,13 @@
   font-size: 15px !important;
 }
 
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+
 .password-wrapper input {
   font-family: Arial, sans-serif;
 }
@@ -83,7 +90,6 @@
   border-radius: 8px !important;
   cursor: pointer;
   font-weight: 600;
-
 }
 
 .login-container p {
@@ -91,10 +97,10 @@
   margin: 10px 0;
   font-size: 15px;
 }
-.login-container p span{
+.login-container p span {
   cursor: pointer;
 }
-.google-btn { 
+.google-btn {
   background-color: #fff;
   color: #007bff;
   border: 1px solid #007bff;
@@ -115,12 +121,10 @@
 }
 
 .google-btn span {
-  padding: 0; 
+  padding: 0;
   line-height: 1; /* Ensure the text stays on a single line */
   white-space: nowrap; /* Prevent text wrapping to the next line */
 }
-
-
 
 .right-images {
   width: 20%;
@@ -129,10 +133,10 @@
   align-items: flex-end;
 }
 
-div .bottom-elli{
+div .bottom-elli {
   margin-top: 525px;
   padding-top: 32px;
-  margin-left: -100PX;
+  margin-left: -100px;
 }
 div .elli1 {
   width: 110%;
