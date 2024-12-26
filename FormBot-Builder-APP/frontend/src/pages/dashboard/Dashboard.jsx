@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFolderPlus } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import ShareModal from "./ShareModal";
 import "./Dashboard.css";
@@ -182,7 +180,7 @@ const Dashboard = () => {
           </select>
         </div>
         <div className="navbar-right">
-          <p className="light">Light</p>
+        <p className={`light ${theme === "dark" ? "theme-active" : ""}`}>Light</p>
           <label className="toggle-switch">
             <input
               type="checkbox"
@@ -191,7 +189,7 @@ const Dashboard = () => {
             />
             <span className="slider"></span>
           </label>
-          <p className="dark">Dark</p>
+          <p className={`dark ${theme === "dark" ? "theme-active" : ""}`}>Dark</p>
           <button
             className="share-button"
             onClick={() => setShowShareModal(true)}
@@ -201,13 +199,13 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* Dashboard Actions */}
+      {/* ..................................Dashboard Actions */}
       <div className="dashboard-actions">
         <button
           className="action-button"
           onClick={() => setShowFolderPrompt(true)}
         >
-          <FontAwesomeIcon icon={faFolderPlus} /> Create a folder
+          <img src="/assets/images/folder.png" alt="" /> Create a folder
         </button>
         {folders.map((folder) => (
           <div

@@ -61,6 +61,11 @@
   border: 1px solid #3e3e3e;
 }
 
+.theme-active {
+  color: black;
+}
+
+
 .navbar-right {
   display: flex;
   align-items: center;
@@ -239,15 +244,17 @@ input:checked + .slider:before {
 .dashboard-cards {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 20px;
+  gap: 5px !important;
   padding: 20px 10%;
+  margin-top: -20px;
 }
 
 .card {
   background-color: #3e3e3e;
   color: #ffffff;
-  height: 220px;
-  border-radius: 10px;
+  width: 200px !important;
+  height: 230px !important;
+  border-radius: 5px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -269,9 +276,9 @@ input:checked + .slider:before {
 }
 
 .typebot-card {
-  background-color: #1A5FFF;
-  width: 220px;
-  height: 220px;
+  background-color: #7d7d7d;
+  width: 200px !important;
+  height: 230px !important;
   position: relative;
   display: flex;
   justify-content: center;
@@ -280,8 +287,8 @@ input:checked + .slider:before {
 
 .typebot-card .delete-icon {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: -10px;
+  right: -5px;
   z-index: 1;
 }
 
