@@ -67,18 +67,30 @@ const Dashboard = () => {
   };
 
   const handleCreateTypebot = () => {
-    if (newTypebotName.trim() && selectedFolder) {
+    if (newTypebotName.trim()) {
       const newTypebot = {
         id: Date.now(),
         name: newTypebotName,
       };
-      setFolderContents({
-        ...folderContents,
-        [selectedFolder]: [
-          ...(folderContents[selectedFolder] || []),
-          newTypebot,
-        ],
-      });
+
+      if (selectedFolder) {
+        // Add to selected folder
+        setFolderContents({
+          ...folderContents,
+          [selectedFolder]: [
+            ...(folderContents[selectedFolder] || []),
+            newTypebot,
+          ],
+        });
+      } else {
+        // Add to main page typebots
+        const mainPageTypebots = folderContents["mainPage"] || [];
+        setFolderContents({
+          ...folderContents,
+          mainPage: [...mainPageTypebots, newTypebot],
+        });
+      }
+
       setNewTypebotName("");
       setShowTypebotPrompt(false);
     }
@@ -268,17 +280,29 @@ const Dashboard = () => {
       )}
 
       {/* Cards Section */}
-      {selectedFolder ? (
-        <div className="dashboard-cards">
-          <div
-            className="card create-card"
-            onClick={() => setShowTypebotPrompt(true)}
-          >
-            <img src="/assets/images/plus.png" alt="create" />
-            <div className="typebot-name">Create a typebot</div>
-          </div>
-          {selectedFolder &&
-            folderContents[selectedFolder]?.map((typebot) => (
+      <div className="dashboard-cards">
+        <div
+          className="card create-card"
+          onClick={() => setShowTypebotPrompt(true)}
+        >
+          <img src="/assets/images/plus.png" alt="create" />
+          <div className="typebot-name">Create a typebot</div>
+        </div>
+        {selectedFolder
+          ? folderContents[selectedFolder]?.map((typebot) => (
+              <div key={typebot.id} className="card typebot-card">
+                <span
+                  className="delete-icon"
+                  onClick={() =>
+                    handleDeleteConfirmation("typebot", typebot.id)
+                  }
+                >
+                  <img src="/assets/images/delete.png" alt="delete" />
+                </span>
+                <div className="typebot-name">{typebot.name}</div>
+              </div>
+            ))
+          : folderContents["mainPage"]?.map((typebot) => (
               <div key={typebot.id} className="card typebot-card">
                 <span
                   className="delete-icon"
@@ -291,18 +315,7 @@ const Dashboard = () => {
                 <div className="typebot-name">{typebot.name}</div>
               </div>
             ))}
-        </div>
-      ) : (
-        <div className="dashboard-cards">
-          <div
-            className="card create-card"
-            onClick={() => setShowFolderPrompt(true)}
-          >
-            <img src="/assets/images/plus.png" alt="create" />
-            <div className="typebot-name">Create a folder</div>
-          </div>
-        </div>
-      )}
+      </div>
 
       {showShareModal && (
         <ShareModal
