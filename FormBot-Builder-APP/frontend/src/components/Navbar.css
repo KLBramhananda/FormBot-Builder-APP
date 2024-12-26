@@ -11,6 +11,8 @@
   display: flex;
   align-items: center;
   gap: 5px;
+  margin-left: 30px;
+  margin-top: 5px;
 }
 
 .navbar-logo {
@@ -64,9 +66,12 @@
   transition: all 0.3s ease;
 }
 
+
 .navbar-right .btn-transparent {
   background-color: transparent;
-  border: 1px solid #7ea6ff;
+  border: 1px solid #6a97f9;
+  margin-right: -70px !important;
+
 }
 
 .navbar-right .btn-transparent:hover {
@@ -78,6 +83,7 @@
   background-color:  #1a5fff;
   border: none;
   color: #ffff;
+  margin-right: 20px;
 }
 
 .navbar-right .btn-blue:hover {

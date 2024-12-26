@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
-import axios from 'axios';
+import axios from "axios";
 import "./SignupPage.css";
 
 const SignupPage = () => {
   const navigate = useNavigate();
-  const [user, setUser] = useState();
+  const [user, setUser] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -48,41 +48,44 @@ const SignupPage = () => {
       setError("Username is required");
       return;
     }
-  
+
     if (!email || email.trim() === "") {
       setError("Email is required");
       return;
     }
-  
+
     if (!email.includes("@") || !email.includes(".com")) {
       setError("Invalid email format");
       return;
     }
-  
+
     if (!password || password.trim() === "") {
       setError("Password is required");
       return;
     }
-  
+
     if (!confirmPassword || confirmPassword.trim() === "") {
       setError("Please confirm your password");
       return;
     }
-  
+
     if (password !== confirmPassword) {
       setError("Passwords do not match");
       return;
     }
-  
+
     try {
       await axios.post("http://localhost:5000/api/users/signup", {
         username: user,
         email,
-        password
+        password,
       });
       navigate("/DashBoard");
     } catch (error) {
-      setError(error.response?.data?.message || "An error occurred during signup. Please try again.");
+      setError(
+        error.response?.data?.message ||
+          "An error occurred during signup. Please try again."
+      );
     }
   };
 
@@ -133,10 +136,20 @@ const SignupPage = () => {
             required
             style={{
               borderColor: !password && error ? "red" : "inherit",
+              color: "grey",
             }}
           />
 
-          <label>Confirm Password</label>
+          <label
+            style={{
+              color:
+                (!confirmPassword || password !== confirmPassword) && error
+                  ? "red"
+                  : "inherit",
+            }}
+          >
+            Confirm Password
+          </label>
           <input
             type="text"
             value={maskPassword(confirmPassword)}
@@ -147,6 +160,7 @@ const SignupPage = () => {
                 (!confirmPassword || password !== confirmPassword) && error
                   ? "red"
                   : "inherit",
+              color: "grey", // Makes text color transparent
             }}
             required
           />
