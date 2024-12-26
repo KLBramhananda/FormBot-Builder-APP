@@ -106,14 +106,26 @@ const Dashboard = () => {
       setFolders(folders.filter((folder) => folder.id !== itemToDelete.id));
       const { [itemToDelete.id]: deleted, ...rest } = folderContents;
       setFolderContents(rest);
-    } else if (itemToDelete.type === "typebot" && selectedFolder) {
-      setFolderContents({
-        ...folderContents,
-        [selectedFolder]: folderContents[selectedFolder].filter(
-          (typebot) => typebot.id !== itemToDelete.id
-        ),
-      });
+    } else if (itemToDelete.type === "typebot") {
+      if (selectedFolder) {
+        // Delete from selected folder
+        setFolderContents({
+          ...folderContents,
+          [selectedFolder]: folderContents[selectedFolder].filter(
+            (typebot) => typebot.id !== itemToDelete.id
+          ),
+        });
+      } else {
+        // Delete from main page
+        setFolderContents({
+          ...folderContents,
+          mainPage: folderContents["mainPage"].filter(
+            (typebot) => typebot.id !== itemToDelete.id
+          ),
+        });
+      }
     }
+
     setShowDeletePrompt(false);
     setItemToDelete(null);
   };
@@ -203,7 +215,9 @@ const Dashboard = () => {
             className={`tab ${
               selectedFolder === folder.id ? "active-tab" : ""
             }`}
-            onClick={() => setSelectedFolder(folder.id)}
+            onClick={() =>  setSelectedFolder((prevSelectedFolder) =>
+              prevSelectedFolder === folder.id ? null : folder.id
+            )}
           >
             {folder.name}
             <img
