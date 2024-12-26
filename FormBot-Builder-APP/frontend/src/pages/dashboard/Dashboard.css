@@ -245,7 +245,7 @@ input:checked + .slider:before {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 5px !important;
-  padding: 20px 10%;
+  padding: 20px 10% !important;
   margin-top: -20px;
 }
 
@@ -254,6 +254,7 @@ input:checked + .slider:before {
   color: #ffffff;
   width: 200px !important;
   height: 230px !important;
+  margin-bottom: 25px;
   border-radius: 5px;
   display: flex;
   flex-direction: column;

@@ -5,25 +5,41 @@ import "./Dashboard.css";
 
 const Dashboard = () => {
   const navigate = useNavigate();
+
+  // State for theme toggle
   const [theme, setTheme] = useState("light");
+
+  // State for showing share modal
   const [showShareModal, setShowShareModal] = useState(false);
+
+  // State for managing folders
   const [folders, setFolders] = useState(() => {
     const savedFolders = localStorage.getItem("folders");
     return savedFolders ? JSON.parse(savedFolders) : [];
   });
 
+  // State for tracking the selected folder
   const [selectedFolder, setSelectedFolder] = useState(null);
+
+  // State for folder contents
   const [folderContents, setFolderContents] = useState(() => {
     const savedContents = localStorage.getItem("folderContents");
     return savedContents ? JSON.parse(savedContents) : {};
   });
 
+  // State for controlling modals and prompts
   const [showFolderPrompt, setShowFolderPrompt] = useState(false);
   const [showTypebotPrompt, setShowTypebotPrompt] = useState(false);
   const [showDeletePrompt, setShowDeletePrompt] = useState(false);
-  const [itemToDelete, setItemToDelete] = useState(null);
+
+  // State for storing new folder and Typebot names
   const [newFolderName, setNewFolderName] = useState("");
   const [newTypebotName, setNewTypebotName] = useState("");
+
+  // State for tracking items marked for deletion
+  const [itemToDelete, setItemToDelete] = useState(null);
+
+  // State for managing current user details
   const [currentUser, setCurrentUser] = useState({
     username: "Bramhananda K L",
     email: "",
@@ -35,6 +51,7 @@ const Dashboard = () => {
     localStorage.setItem("folderContents", JSON.stringify(folderContents));
   }, [folders, folderContents]);
 
+  // Load user data and saved state from localStorage on component mount
   useEffect(() => {
     const userData = localStorage.getItem("userData");
     if (userData) {
@@ -42,50 +59,64 @@ const Dashboard = () => {
     }
   }, []);
 
+  // Toggle between light and dark themes
   const toggleTheme = () => {
     const newTheme = theme === "light" ? "dark" : "light";
     setTheme(newTheme);
     document.body.className = newTheme;
   };
 
+  // Handle creating a new folder
   const handleCreateFolder = () => {
     if (newFolderName.trim()) {
-      const newFolder = {
-        id: Date.now(),
-        name: newFolderName,
-      };
+      const folderExists = folders.some(
+        (folder) => folder.name === newFolderName
+      );
+      if (folderExists) {
+        alert(
+          "This folder name already exists. Please choose a different name."
+        );
+        return;
+      }
+
+      const newFolder = { id: Date.now(), name: newFolderName };
       setFolders([...folders, newFolder]);
-      setFolderContents({
-        ...folderContents,
-        [newFolder.id]: [],
-      });
+      setFolderContents({ ...folderContents, [newFolder.id]: [] });
       setNewFolderName("");
       setShowFolderPrompt(false);
     }
   };
 
+  // Handle creating a new Typebot
   const handleCreateTypebot = () => {
     if (newTypebotName.trim()) {
-      const newTypebot = {
-        id: Date.now(),
-        name: newTypebotName,
-      };
+      const existingTypebots = selectedFolder
+        ? folderContents[selectedFolder] || []
+        : folderContents["mainPage"] || [];
 
+      const typebotExists = existingTypebots.some(
+        (typebot) => typebot.name === newTypebotName
+      );
+
+      if (typebotExists) {
+        alert(
+          selectedFolder
+            ? "This Typebot name already exists in the folder. Please choose a different name."
+            : "This Typebot name already exists. Please choose a different name."
+        );
+        return;
+      }
+
+      const newTypebot = { id: Date.now(), name: newTypebotName };
       if (selectedFolder) {
-        // Add to selected folder
         setFolderContents({
           ...folderContents,
-          [selectedFolder]: [
-            ...(folderContents[selectedFolder] || []),
-            newTypebot,
-          ],
+          [selectedFolder]: [...existingTypebots, newTypebot],
         });
       } else {
-        // Add to main page typebots
-        const mainPageTypebots = folderContents["mainPage"] || [];
         setFolderContents({
           ...folderContents,
-          mainPage: [...mainPageTypebots, newTypebot],
+          mainPage: [...existingTypebots, newTypebot],
         });
       }
 
@@ -94,11 +125,13 @@ const Dashboard = () => {
     }
   };
 
+  // Confirm delete action for folders or Typebots
   const handleDeleteConfirmation = (type, id) => {
     setItemToDelete({ type, id });
     setShowDeletePrompt(true);
   };
 
+  // Handle deleting folders or Typebots
   const handleDelete = () => {
     if (itemToDelete.type === "folder") {
       setFolders(folders.filter((folder) => folder.id !== itemToDelete.id));
@@ -128,26 +161,7 @@ const Dashboard = () => {
     setItemToDelete(null);
   };
 
-  useEffect(() => {
-    // Load saved folders and contents when component mounts
-    const savedFolders = localStorage.getItem("folders");
-    const savedContents = localStorage.getItem("folderContents");
-
-    if (savedFolders) {
-      setFolders(JSON.parse(savedFolders));
-    }
-
-    if (savedContents) {
-      setFolderContents(JSON.parse(savedContents));
-    }
-  }, []);
-
-  // Save whenever folders or contents change
-  useEffect(() => {
-    localStorage.setItem("folders", JSON.stringify(folders));
-    localStorage.setItem("folderContents", JSON.stringify(folderContents));
-  }, [folders, folderContents]);
-
+  // Handle navigation dropdown options
   const handleDropdownChange = (e) => {
     const value = e.target.value;
     if (value === "settings") {
@@ -157,6 +171,7 @@ const Dashboard = () => {
     }
   };
 
+  // Log out user and clear data from localStorage
   const handleLogout = () => {
     localStorage.removeItem("userData");
     navigate("/login");
@@ -164,7 +179,7 @@ const Dashboard = () => {
 
   return (
     <div className={`dashboard-container ${theme}`}>
-      {/* Navbar */}
+      {/* Navbar for user and theme controls */}
       <div className="dashboard-navbar">
         <div className="dropdown-container">
           <select
@@ -180,7 +195,9 @@ const Dashboard = () => {
           </select>
         </div>
         <div className="navbar-right">
-        <p className={`light ${theme === "dark" ? "theme-active" : ""}`}>Light</p>
+          <p className={`light ${theme === "dark" ? "theme-active" : ""}`}>
+            Light
+          </p>
           <label className="toggle-switch">
             <input
               type="checkbox"
@@ -189,7 +206,9 @@ const Dashboard = () => {
             />
             <span className="slider"></span>
           </label>
-          <p className={`dark ${theme === "dark" ? "theme-active" : ""}`}>Dark</p>
+          <p className={`dark ${theme === "dark" ? "theme-active" : ""}`}>
+            Dark
+          </p>
           <button
             className="share-button"
             onClick={() => setShowShareModal(true)}
@@ -199,7 +218,7 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* ..................................Dashboard Actions */}
+      {/* Actions and content management */}
       <div className="dashboard-actions">
         <button
           className="action-button"
@@ -213,9 +232,11 @@ const Dashboard = () => {
             className={`tab ${
               selectedFolder === folder.id ? "active-tab" : ""
             }`}
-            onClick={() =>  setSelectedFolder((prevSelectedFolder) =>
-              prevSelectedFolder === folder.id ? null : folder.id
-            )}
+            onClick={() =>
+              setSelectedFolder((prevSelectedFolder) =>
+                prevSelectedFolder === folder.id ? null : folder.id
+              )
+            }
           >
             {folder.name}
             <img
@@ -230,7 +251,7 @@ const Dashboard = () => {
         ))}
       </div>
 
-      {/* Folder Creation Prompt */}
+      {/* Folder creation modal */}
       {showFolderPrompt && (
         <div className="modal-overlay">
           <div className="modal-content">
@@ -249,7 +270,7 @@ const Dashboard = () => {
         </div>
       )}
 
-      {/* Typebot Creation Prompt */}
+      {/* Typebot creation modal */}
       {showTypebotPrompt && (
         <div className="modal-overlay">
           <div className="modal-content">
@@ -270,7 +291,7 @@ const Dashboard = () => {
         </div>
       )}
 
-      {/* Delete Confirmation Prompt */}
+      {/* Delete confirmation modal */}
       {showDeletePrompt && (
         <div className="modal-overlay">
           <div className="modal-content">
@@ -291,7 +312,7 @@ const Dashboard = () => {
         </div>
       )}
 
-      {/* Cards Section */}
+      {/* Displaying typebots */}
       <div className="dashboard-cards">
         <div
           className="card create-card"
@@ -329,14 +350,13 @@ const Dashboard = () => {
             ))}
       </div>
 
+      {/* Share modal */}
       {showShareModal && (
-        <ShareModal
-          onClose={() => setShowShareModal(false)}
-          currentUser={currentUser}
-        />
+        <ShareModal onClose={() => setShowShareModal(false)} />
       )}
     </div>
   );
 };
 
 export default Dashboard;
+
