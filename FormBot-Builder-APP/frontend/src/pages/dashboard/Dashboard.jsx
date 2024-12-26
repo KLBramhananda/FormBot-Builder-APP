@@ -106,6 +106,26 @@ const Dashboard = () => {
     setItemToDelete(null);
   };
 
+  useEffect(() => {
+    // Load saved folders and contents when component mounts
+    const savedFolders = localStorage.getItem("folders");
+    const savedContents = localStorage.getItem("folderContents");
+
+    if (savedFolders) {
+      setFolders(JSON.parse(savedFolders));
+    }
+
+    if (savedContents) {
+      setFolderContents(JSON.parse(savedContents));
+    }
+  }, []);
+
+  // Save whenever folders or contents change
+  useEffect(() => {
+    localStorage.setItem("folders", JSON.stringify(folders));
+    localStorage.setItem("folderContents", JSON.stringify(folderContents));
+  }, [folders, folderContents]);
+
   const handleDropdownChange = (e) => {
     const value = e.target.value;
     if (value === "settings") {
@@ -130,7 +150,9 @@ const Dashboard = () => {
             onChange={handleDropdownChange}
             value="dashboard"
           >
-            <option value="dashboard">{currentUser.username}</option>
+            <option value="dashboard" disabled hidden>
+              {currentUser.username}
+            </option>
             <option value="settings">Settings</option>
             <option value="logout">Logout</option>
           </select>
@@ -166,7 +188,9 @@ const Dashboard = () => {
         {folders.map((folder) => (
           <div
             key={folder.id}
-            className={`tab ${selectedFolder === folder.id ? "selected" : ""}`}
+            className={`tab ${
+              selectedFolder === folder.id ? "active-tab" : ""
+            }`}
             onClick={() => setSelectedFolder(folder.id)}
           >
             {folder.name}
@@ -253,17 +277,20 @@ const Dashboard = () => {
             <img src="/assets/images/plus.png" alt="create" />
             <div className="typebot-name">Create a typebot</div>
           </div>
-          {folderContents[selectedFolder]?.map((typebot) => (
-            <div key={typebot.id} className="card">
-              {typebot.name}
-              <span
-                className="delete-icon"
-                onClick={() => handleDeleteConfirmation("typebot", typebot.id)}
-              >
-                <img src="/assets/images/delete.png" alt="delete" />
-              </span>
-            </div>
-          ))}
+          {selectedFolder &&
+            folderContents[selectedFolder]?.map((typebot) => (
+              <div key={typebot.id} className="card typebot-card">
+                <span
+                  className="delete-icon"
+                  onClick={() =>
+                    handleDeleteConfirmation("typebot", typebot.id)
+                  }
+                >
+                  <img src="/assets/images/delete.png" alt="delete" />
+                </span>
+                <div className="typebot-name">{typebot.name}</div>
+              </div>
+            ))}
         </div>
       ) : (
         <div className="dashboard-cards">
@@ -276,6 +303,7 @@ const Dashboard = () => {
           </div>
         </div>
       )}
+
       {showShareModal && (
         <ShareModal
           onClose={() => setShowShareModal(false)}
