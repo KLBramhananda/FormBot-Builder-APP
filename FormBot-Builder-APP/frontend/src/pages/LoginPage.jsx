@@ -45,10 +45,19 @@ const LoginPage = () => {
         }
       );
 
+      // Store user data in localStorage
+      localStorage.setItem(
+        "userData",
+        JSON.stringify({
+          username: response.data.username, // Backend needs to send username
+          email: email,
+        })
+      );
+
       if (response.data.hasFormCreated) {
         navigate("/yourCustomFormPage");
       } else {
-        navigate("/DashBoard");
+        navigate("/Dashboard");
       }
     } catch (error) {
       setError(

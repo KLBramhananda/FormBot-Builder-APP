@@ -44,6 +44,7 @@ const SignupPage = () => {
   };
 
   const handleSignUp = async () => {
+    // Validation checks remain the same
     if (!user || user.trim() === "") {
       setError("Username is required");
       return;
@@ -75,12 +76,37 @@ const SignupPage = () => {
     }
 
     try {
-      await axios.post("http://localhost:5000/api/users/signup", {
-        username: user,
-        email,
-        password,
-      });
-      navigate("/DashBoard");
+      const response = await axios.post(
+        "http://localhost:5000/api/users/signup",
+        {
+          username: user,
+          email,
+          password,
+        }
+      );
+
+      if (response.status === 201) {
+        // Check if signup was successful
+        // Store user data in localStorage
+        localStorage.setItem(
+          "userData",
+          JSON.stringify({
+            username: user,
+            email: email,
+          })
+        );
+
+        // Initialize empty folders and contents for new user
+        localStorage.setItem(`folders_${email}`, JSON.stringify([]));
+        localStorage.setItem(
+          `folderContents_${email}`,
+          JSON.stringify({
+            mainPage: [],
+          })
+        );
+
+        navigate("/Dashboard");
+      }
     } catch (error) {
       setError(
         error.response?.data?.message ||

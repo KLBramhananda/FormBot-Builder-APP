@@ -12,19 +12,27 @@ const Dashboard = () => {
   // State for showing share modal
   const [showShareModal, setShowShareModal] = useState(false);
 
-  // State for managing folders
+  // Update folders state to use user-specific storage
   const [folders, setFolders] = useState(() => {
-    const savedFolders = localStorage.getItem("folders");
+    const userData = localStorage.getItem("userData");
+    if (!userData) return [];
+
+    const { email } = JSON.parse(userData);
+    const savedFolders = localStorage.getItem(`folders_${email}`);
     return savedFolders ? JSON.parse(savedFolders) : [];
   });
 
   // State for tracking the selected folder
   const [selectedFolder, setSelectedFolder] = useState(null);
 
-  // State for folder contents
+  // Update folderContents state to use user-specific storage
   const [folderContents, setFolderContents] = useState(() => {
-    const savedContents = localStorage.getItem("folderContents");
-    return savedContents ? JSON.parse(savedContents) : {};
+    const userData = localStorage.getItem("userData");
+    if (!userData) return { mainPage: [] };
+
+    const { email } = JSON.parse(userData);
+    const savedContents = localStorage.getItem(`folderContents_${email}`);
+    return savedContents ? JSON.parse(savedContents) : { mainPage: [] };
   });
 
   // State for controlling modals and prompts
@@ -40,16 +48,23 @@ const Dashboard = () => {
   const [itemToDelete, setItemToDelete] = useState(null);
 
   // State for managing current user details
-  const [currentUser, setCurrentUser] = useState({
-    username: "Bramhananda K L",
-    email: "",
+  const [currentUser, setCurrentUser] = useState(() => {
+    const userData = localStorage.getItem("userData");
+    return userData
+      ? JSON.parse(userData)
+      : {
+          username: "",
+          email: "",
+        };
   });
 
-  // Save folders and contents to localStorage whenever they change
+  // Update useEffect to save user-specific data
   useEffect(() => {
-    localStorage.setItem("folders", JSON.stringify(folders));
-    localStorage.setItem("folderContents", JSON.stringify(folderContents));
-  }, [folders, folderContents]);
+    if (currentUser.email) {
+      localStorage.setItem(`folders_${currentUser.email}`, JSON.stringify(folders));
+      localStorage.setItem(`folderContents_${currentUser.email}`, JSON.stringify(folderContents));
+    }
+  }, [folders, folderContents, currentUser.email]);
 
   // Load user data and saved state from localStorage on component mount
   useEffect(() => {
@@ -171,9 +186,12 @@ const Dashboard = () => {
     }
   };
 
-  // Log out user and clear data from localStorage
+  // Update logout handler to clear only user-specific data
   const handleLogout = () => {
-    localStorage.removeItem("userData");
+    const userEmail = currentUser.email;
+    localStorage.removeItem('userData');
+    localStorage.removeItem(`folders_${userEmail}`);
+    localStorage.removeItem(`folderContents_${userEmail}`);
     navigate("/login");
   };
 
