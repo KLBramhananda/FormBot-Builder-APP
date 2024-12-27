@@ -10,15 +10,15 @@ router.post("/signup", async (req, res) => {
     // Only check for existing email
     const existingEmail = await User.findOne({ email });
     if (existingEmail) {
-      return res.status(400).json({ 
-        message: "Email already exists, please try to login!" 
+      return res.status(400).json({
+        message: "Email already exists, please try to login!",
       });
     }
 
-    const newUser = new User({ 
+    const newUser = new User({
       username,
-      email, 
-      password 
+      email,
+      password,
     });
     await newUser.save();
     res.status(201).json({ message: "User registered successfully" });
@@ -34,26 +34,27 @@ router.post("/login", async (req, res) => {
   try {
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(404).json({ 
-        message: "Email does not exist. Please check once!" 
+      return res.status(404).json({
+        message: "Email does not exist. Please check once!",
       });
     }
 
     if (user.password !== password) {
-      return res.status(401).json({ 
-        message: "Password is Incorrect! Please check once!" 
+      return res.status(401).json({
+        message: "Password is Incorrect! Please check once!",
       });
     }
 
-    res.status(200).json({ 
-      message: "Login successful", 
+    res.status(200).json({
+      message: "Login successful",
       userId: user._id,
-      hasFormCreated: user.hasFormCreated 
+      username: user.username, // Added username to response
+      hasFormCreated: user.hasFormCreated,
     });
   } catch (error) {
     console.error("Error during login:", error);
-    res.status(500).json({ 
-      message: "An error occurred during login. Please try again." 
+    res.status(500).json({
+      message: "An error occurred during login. Please try again.",
     });
   }
 });

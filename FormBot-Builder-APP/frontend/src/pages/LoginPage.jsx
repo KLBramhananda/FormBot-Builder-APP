@@ -54,6 +54,23 @@ const LoginPage = () => {
         })
       );
 
+      // Check if user has existing data
+      const existingFolders = localStorage.getItem(`folders_${email}`);
+      const existingContents = localStorage.getItem(`folderContents_${email}`);
+
+      // If no existing data, initialize with empty structures
+      if (!existingFolders) {
+        localStorage.setItem(`folders_${email}`, JSON.stringify([]));
+      }
+      if (!existingContents) {
+        localStorage.setItem(
+          `folderContents_${email}`,
+          JSON.stringify({
+            mainPage: [],
+          })
+        );
+      }
+
       if (response.data.hasFormCreated) {
         navigate("/yourCustomFormPage");
       } else {

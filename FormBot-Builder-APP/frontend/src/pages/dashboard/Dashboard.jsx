@@ -12,7 +12,7 @@ const Dashboard = () => {
   // State for showing share modal
   const [showShareModal, setShowShareModal] = useState(false);
 
-  // Update folders state to use user-specific storage
+  // Replace the folders state
   const [folders, setFolders] = useState(() => {
     const userData = localStorage.getItem("userData");
     if (!userData) return [];
@@ -25,7 +25,7 @@ const Dashboard = () => {
   // State for tracking the selected folder
   const [selectedFolder, setSelectedFolder] = useState(null);
 
-  // Update folderContents state to use user-specific storage
+  // Replace the folderContents state
   const [folderContents, setFolderContents] = useState(() => {
     const userData = localStorage.getItem("userData");
     if (!userData) return { mainPage: [] };
@@ -48,6 +48,7 @@ const Dashboard = () => {
   const [itemToDelete, setItemToDelete] = useState(null);
 
   // State for managing current user details
+  // Replace the currentUser state
   const [currentUser, setCurrentUser] = useState(() => {
     const userData = localStorage.getItem("userData");
     return userData
@@ -58,11 +59,17 @@ const Dashboard = () => {
         };
   });
 
-  // Update useEffect to save user-specific data
+  // Update the useEffect for saving data
   useEffect(() => {
     if (currentUser.email) {
-      localStorage.setItem(`folders_${currentUser.email}`, JSON.stringify(folders));
-      localStorage.setItem(`folderContents_${currentUser.email}`, JSON.stringify(folderContents));
+      localStorage.setItem(
+        `folders_${currentUser.email}`,
+        JSON.stringify(folders)
+      );
+      localStorage.setItem(
+        `folderContents_${currentUser.email}`,
+        JSON.stringify(folderContents)
+      );
     }
   }, [folders, folderContents, currentUser.email]);
 
@@ -186,12 +193,9 @@ const Dashboard = () => {
     }
   };
 
-  // Update logout handler to clear only user-specific data
+  // Update the logout handler
   const handleLogout = () => {
-    const userEmail = currentUser.email;
-    localStorage.removeItem('userData');
-    localStorage.removeItem(`folders_${userEmail}`);
-    localStorage.removeItem(`folderContents_${userEmail}`);
+    localStorage.removeItem("userData");
     navigate("/login");
   };
 
