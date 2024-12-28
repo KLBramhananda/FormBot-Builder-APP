@@ -1,3 +1,4 @@
+// In models/Share.js
 const mongoose = require('mongoose');
 
 const shareSchema = new mongoose.Schema({
@@ -5,6 +6,8 @@ const shareSchema = new mongoose.Schema({
   sharerUsername: { type: String, required: true },
   inviteeEmail: { type: String, required: true },
   permission: { type: String, required: true, enum: ['Edit', 'View'] },
+  token: { type: String }, // For share links
+  type: { type: String, enum: ['invite', 'link'], default: 'invite' },
   createdAt: { type: Date, default: Date.now }
 });
 

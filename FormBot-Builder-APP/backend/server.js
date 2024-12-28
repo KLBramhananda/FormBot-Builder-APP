@@ -2,18 +2,18 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-require("dotenv").config(); // Make sure dotenv is required here
+const shareRoutes = require("./routes/share");
+
+require("dotenv").config();
 
 const userRoutes = require("./routes/UserRoutes");
 
 const app = express();
-
-const shareRoutes = require("./models/Share");
 app.use("/api/share", shareRoutes);
 
-// Middleware
 app.use(cors());
 app.use(bodyParser.json());
+app.use(express.json());
 
 // Routes
 app.use("/api/users", userRoutes);
