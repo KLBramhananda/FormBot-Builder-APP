@@ -210,7 +210,7 @@ const Dashboard = () => {
             value="dashboard"
           >
             <option value="dashboard" disabled hidden>
-              {currentUser.username}
+            {currentUser.username ? `${currentUser.username}'s workspace` : 'workspace'}
             </option>
             <option value="settings">Settings</option>
             <option value="logout">Logout</option>
@@ -275,7 +275,12 @@ const Dashboard = () => {
 
       {/* Folder creation modal */}
       {showFolderPrompt && (
-        <div className="modal-overlay">
+          <div className="modal-overlay" onClick={(e) => {
+            // Only close if clicking the overlay, not the modal content
+            if (e.target.className === 'modal-overlay') {
+              setShowFolderPrompt(false);
+            }
+          }}>
           <div className="modal-content">
             <h3>Create New Folder</h3>
             <input
@@ -294,7 +299,12 @@ const Dashboard = () => {
 
       {/* Typebot creation modal */}
       {showTypebotPrompt && (
-        <div className="modal-overlay">
+          <div className="modal-overlay" onClick={(e) => {
+            // Only close if clicking the overlay, not the modal content
+            if (e.target.className === 'modal-overlay') {
+              setShowTypebotPrompt(false);
+            }
+          }}>
           <div className="modal-content">
             <h3>Create New Typebot</h3>
             <input
@@ -315,7 +325,12 @@ const Dashboard = () => {
 
       {/* Delete confirmation modal */}
       {showDeletePrompt && (
-        <div className="modal-overlay">
+          <div className="modal-overlay" onClick={(e) => {
+            // Only close if clicking the overlay, not the modal content
+            if (e.target.className === 'modal-overlay') {
+              setShowDeletePrompt(false);
+            }
+          }}>
           <div className="modal-content">
             <h3>Delete Confirmation</h3>
             <p>Are you sure you want to delete this {itemToDelete?.type}?</p>

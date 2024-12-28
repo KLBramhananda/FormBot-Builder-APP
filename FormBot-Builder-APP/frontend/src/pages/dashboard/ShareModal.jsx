@@ -6,6 +6,7 @@ const ShareModal = ({ onClose }) => {
 
   return (
     <div className="modal-overlay">
+      
       <div className="modal-content">
         <div className="modal-header">
           <h2>Invite by Email</h2>
