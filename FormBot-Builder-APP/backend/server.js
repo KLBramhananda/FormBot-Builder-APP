@@ -8,6 +8,9 @@ const userRoutes = require("./routes/UserRoutes");
 
 const app = express();
 
+const shareRoutes = require("./models/Share");
+app.use("/api/share", shareRoutes);
+
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());

@@ -1,5 +1,7 @@
+// Settings.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import './Settings.css';
 
 const Settings = () => {
@@ -7,9 +9,11 @@ const Settings = () => {
   const [userData, setUserData] = useState({
     username: '',
     email: '',
-    password: '',
+    oldPassword: '',
+    newPassword: '',
     confirmPassword: ''
   });
+  const [message, setMessage] = useState({ type: '', text: '' });
 
   useEffect(() => {
     const storedData = localStorage.getItem('userData');
@@ -23,21 +27,66 @@ const Settings = () => {
     }
   }, []);
 
-  const handleUpdate = (type) => {
-    if (type === 'profile') {
-      // Update profile logic
-      localStorage.setItem('userData', JSON.stringify({
-        username: userData.username,
-        email: userData.email
-      }));
-    } else if (type === 'password') {
-      if (userData.password === userData.confirmPassword) {
-        // Update password logic
-        console.log('Password updated');
+  const handleUpdate = async () => {
+    try {
+      // If password fields are filled, update password
+      if (userData.newPassword || userData.confirmPassword || userData.oldPassword) {
+        if (!userData.oldPassword) {
+          setMessage({ type: 'error', text: 'Please enter your old password' });
+          return;
+        }
+        if (userData.newPassword !== userData.confirmPassword) {
+          setMessage({ type: 'error', text: 'New passwords do not match' });
+          return;
+        }
+
+        const response = await axios.put('http://localhost:5000/api/users/update', {
+          email: userData.email,
+          oldPassword: userData.oldPassword,
+          newPassword: userData.newPassword,
+          username: userData.username
+        });
+
+        if (response.status === 200) {
+          // Update local storage
+          localStorage.setItem('userData', JSON.stringify({
+            username: userData.username,
+            email: userData.email
+          }));
+
+          // Clear password fields
+          setUserData(prev => ({
+            ...prev,
+            oldPassword: '',
+            newPassword: '',
+            confirmPassword: ''
+          }));
+
+          setMessage({ type: 'success', text: 'Profile and password updated successfully!' });
+        }
       } else {
-        alert('Passwords do not match');
+        // Only update profile
+        const response = await axios.put('http://localhost:5000/api/users/update', {
+          email: userData.email,
+          username: userData.username
+        });
+
+        if (response.status === 200) {
+          localStorage.setItem('userData', JSON.stringify({
+            username: userData.username,
+            email: userData.email
+          }));
+          setMessage({ type: 'success', text: 'Profile updated successfully!' });
+        }
       }
+    } catch (error) {
+      setMessage({ 
+        type: 'error', 
+        text: error.response?.data?.message || 'Update failed' 
+      });
     }
+
+    setTimeout(() => setMessage({ type: '', text: '' }), 3000);
   };
 
   const handleLogout = () => {
@@ -62,15 +111,17 @@ const Settings = () => {
             value={userData.email}
             onChange={(e) => setUserData({...userData, email: e.target.value})}
           />
-          <button onClick={() => handleUpdate('profile')}>Update Profile</button>
-        </div>
-
-        <div className="input-group">
+          <input
+            type="password"
+            placeholder="Old Password"
+            value={userData.oldPassword}
+            onChange={(e) => setUserData({...userData, oldPassword: e.target.value})}
+          />
           <input
             type="password"
             placeholder="New Password"
-            value={userData.password}
-            onChange={(e) => setUserData({...userData, password: e.target.value})}
+            value={userData.newPassword}
+            onChange={(e) => setUserData({...userData, newPassword: e.target.value})}
           />
           <input
             type="password"
@@ -78,8 +129,14 @@ const Settings = () => {
             value={userData.confirmPassword}
             onChange={(e) => setUserData({...userData, confirmPassword: e.target.value})}
           />
-          <button onClick={() => handleUpdate('password')}>Update Password</button>
+          <button onClick={handleUpdate}>Update</button>
         </div>
+
+        {message.text && (
+          <p className={`message ${message.type}`}>
+            {message.text}
+          </p>
+        )}
 
         <button className="logout-button" onClick={handleLogout}>
           Logout

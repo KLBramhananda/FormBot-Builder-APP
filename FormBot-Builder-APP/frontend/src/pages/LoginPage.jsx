@@ -70,12 +70,17 @@ const LoginPage = () => {
           })
         );
       }
-
-      if (response.data.hasFormCreated) {
-        navigate("/yourCustomFormPage");
-      } else {
-        navigate("/Dashboard");
+      const pendingShareToken = localStorage.getItem('pendingShareToken');
+      if (pendingShareToken) {
+        try {
+          const shareData = JSON.parse(atob(pendingShareToken));
+          localStorage.setItem('activeShare', JSON.stringify(shareData));
+          localStorage.removeItem('pendingShareToken');
+        } catch (error) {
+          console.error('Invalid share token:', error);
+        }
       }
+      navigate("/Dashboard");
     } catch (error) {
       setError(
         error.response?.data?.message ||

@@ -2,9 +2,9 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
-import YourCustomFormPage from "./pages/yourCustomFormPage";
 import Settings from "./pages/dashboard/Settings";
 import Dashboard from "./pages/dashboard/Dashboard";
+import SharedDashboardRedirect from './components/SharedDashboardRedirect';
 
 function App() {
   return (
@@ -16,7 +16,8 @@ function App() {
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/dashboard" element={<Dashboard/>}/>
         <Route path="/settings" element={<Settings/>}/>
-        <Route path="/yourCustomFormPage" element={<YourCustomFormPage />} />
+        <Route path="/shared/:token" element={<SharedDashboardRedirect />} />
+        <Route path="/shared/:token" element={<SharedDashboardRedirect />} />
 
       </Routes>
     </Router>

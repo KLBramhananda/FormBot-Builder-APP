@@ -1,6 +1,6 @@
 .settings-container {
   max-width: 600px;
-  margin: 40px auto;
+  margin: 0 auto;
   padding: 20px;
 }
 
@@ -11,27 +11,23 @@
 }
 
 .settings-form {
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
+  background: black;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .input-group {
   display: flex;
   flex-direction: column;
   gap: 15px;
-  background-color: #1e1e1e;
-  padding: 20px;
-  border-radius: 8px;
+  margin-bottom: 20px;
 }
 
 .input-group input {
-  padding: 12px;
-  border: 1px solid #3e3e3e;
-  border-radius: 5px;
-  background-color: #2e2e2e;
-  color: #ffffff;
-  font-size: 14px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
 }
 
 .input-group input:focus {
@@ -54,19 +50,25 @@
   background-color: #0056b3;
 }
 
-.logout-button {
-  background-color: #ff4d4d;
-  color: #ffffff;
+button {
+  padding: 10px 20px;
   border: none;
-  padding: 12px;
-  border-radius: 5px;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: white;
   cursor: pointer;
-  font-size: 14px;
-  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.logout-button {
+  background-color: #dc3545;
   width: 100%;
   margin-top: 20px;
 }
 
 .logout-button:hover {
-  background-color: #ff3333;
+  background-color: #c82333;
 }

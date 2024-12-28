@@ -327,7 +327,7 @@ input:checked + .slider:before {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: transparent;  /* Changed from rgba(0, 0, 0, 0.5) */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -335,10 +335,14 @@ input:checked + .slider:before {
 }
 
 .modal-content {
-  background-color: #2e2e2e;
-  padding: 25px;
+  background: black;
+  padding: 20px;
+  border: 1px solid #3e3e3e;
   border-radius: 8px;
-  min-width: 300px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 500px;
+  position: relative;
 }
 
 .modal-content h3 {

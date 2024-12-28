@@ -1,6 +1,42 @@
 const express = require("express");
+const Share = require('../models/Share');
 const User = require("../models/User");
 const router = express.Router();
+
+
+router.post('/invite', async (req, res) => {
+  try {
+    const { sharedBy, sharerUsername, inviteeEmail, permission } = req.body;
+    
+    // Check if invitee exists
+    const invitee = await User.findOne({ email: inviteeEmail });
+    if (!invitee) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    
+    // Create share record
+    const share = new Share({
+      sharedBy,
+      sharerUsername,
+      inviteeEmail,
+      permission
+    });
+    
+    await share.save();
+    res.status(201).json({ message: 'Invite sent successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error sending invite' });
+  }
+});
+
+router.get('/shared-dashboards/:email', async (req, res) => {
+  try {
+    const shares = await Share.find({ inviteeEmail: req.params.email });
+    res.json(shares);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching shared dashboards' });
+  }
+})
 
 // Signup API
 router.post("/signup", async (req, res) => {
@@ -58,5 +94,6 @@ router.post("/login", async (req, res) => {
     });
   }
 });
+
 
 module.exports = router;

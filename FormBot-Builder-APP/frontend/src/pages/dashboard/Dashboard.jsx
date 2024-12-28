@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import ShareModal from "./ShareModal";
 import "./Dashboard.css";
@@ -47,7 +48,6 @@ const Dashboard = () => {
   // State for tracking items marked for deletion
   const [itemToDelete, setItemToDelete] = useState(null);
 
-  // State for managing current user details
   // Replace the currentUser state
   const [currentUser, setCurrentUser] = useState(() => {
     const userData = localStorage.getItem("userData");
@@ -58,6 +58,26 @@ const Dashboard = () => {
           email: "",
         };
   });
+
+  const [sharedDashboards, setSharedDashboards] = useState([]);
+  const [currentDashboard, setCurrentDashboard] = useState('own');
+
+  useEffect(() => {
+    const fetchSharedDashboards = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/api/share/shared-dashboards/${currentUser.email}`
+        );
+        setSharedDashboards(response.data);
+      } catch (error) {
+        console.error('Error fetching shared dashboards:', error);
+      }
+    };
+    
+    if (currentUser.email) {
+      fetchSharedDashboards();
+    }
+  }, [currentUser.email]);
 
   // Update the useEffect for saving data
   useEffect(() => {
@@ -183,16 +203,44 @@ const Dashboard = () => {
     setItemToDelete(null);
   };
 
-  // Handle navigation dropdown options
+  // Update dropdown options
+  const renderWorkspaceDropdown = () => (
+    <select
+      className="workspace-dropdown"
+      onChange={handleDropdownChange}
+      value={currentDashboard}
+    >
+      <option value="own">
+        {currentUser.username}'s workspace
+      </option>
+      {sharedDashboards.map(share => (
+        <option key={share._id} value={share.sharedBy}>
+          {share.sharerUsername}'s workspace
+        </option>
+      ))}
+      <option value="settings">Settings</option>
+      <option value="logout">Logout</option>
+    </select>
+  );
+
+  // Update handleDropdownChange
   const handleDropdownChange = (e) => {
     const value = e.target.value;
-    if (value === "settings") {
-      navigate("/settings");
-    } else if (value === "logout") {
+    if (value === 'settings') {
+      navigate('/settings');
+    } else if (value === 'logout') {
       handleLogout();
+    } else if (value === 'own') {
+      setCurrentDashboard('own');
+    } else {
+      setCurrentDashboard(value);
+      // Load shared dashboard data
     }
   };
 
+  const canEdit = currentDashboard === 'own' || 
+  sharedDashboards.find(s => s.sharedBy === currentDashboard)?.permission === 'Edit';
+  
   // Update the logout handler
   const handleLogout = () => {
     localStorage.removeItem("userData");
@@ -241,37 +289,39 @@ const Dashboard = () => {
       </div>
 
       {/* Actions and content management */}
-      <div className="dashboard-actions">
-        <button
-          className="action-button"
-          onClick={() => setShowFolderPrompt(true)}
-        >
-          <img src="/assets/images/folder.png" alt="" /> Create a folder
-        </button>
-        {folders.map((folder) => (
-          <div
-            key={folder.id}
-            className={`tab ${
-              selectedFolder === folder.id ? "active-tab" : ""
-            }`}
-            onClick={() =>
-              setSelectedFolder((prevSelectedFolder) =>
-                prevSelectedFolder === folder.id ? null : folder.id
-              )
-            }
+      {canEdit && (
+        <div className="dashboard-actions">
+          <button
+            className="action-button"
+            onClick={() => setShowFolderPrompt(true)}
           >
-            {folder.name}
-            <img
-              src="/assets/images/delete.png"
-              alt="delete"
-              onClick={(e) => {
-                e.stopPropagation();
-                handleDeleteConfirmation("folder", folder.id);
-              }}
-            />
-          </div>
-        ))}
-      </div>
+            <img src="/assets/images/folder.png" alt="" /> Create a folder
+          </button>
+          {folders.map((folder) => (
+            <div
+              key={folder.id}
+              className={`tab ${
+                selectedFolder === folder.id ? "active-tab" : ""
+              }`}
+              onClick={() =>
+                setSelectedFolder((prevSelectedFolder) =>
+                  prevSelectedFolder === folder.id ? null : folder.id
+                )
+              }
+            >
+              {folder.name}
+              <img
+                src="/assets/images/delete.png"
+                alt="delete"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDeleteConfirmation("folder", folder.id);
+                }}
+              />
+            </div>
+          ))}
+        </div>
+      )}
 
       {/* Folder creation modal */}
       {showFolderPrompt && (
