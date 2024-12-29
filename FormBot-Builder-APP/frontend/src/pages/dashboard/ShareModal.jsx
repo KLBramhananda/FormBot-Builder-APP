@@ -1,44 +1,48 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './ShareModal.css';
 
-const ShareModal = ({ onClose, currentUser }) => {
+// Create axios instance with base URL
+const api = axios.create({
+  baseURL: 'http://localhost:5000',
+  headers: {
+    'Content-Type': 'application/json'
+  }
+});
+
+const ShareModal = ({ onClose }) => {
   const [email, setEmail] = useState('');
   const [permission, setPermission] = useState('Edit');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [currentUser, setCurrentUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  // Function to test API connection
-  const testConnection = async () => {
-    try {
-      const response = await axios.get('http://localhost:5000/api/share/test');
-      console.log('API test response:', response.data);
-    } catch (error) {
-      console.error('API test error:', error);
+  useEffect(() => {
+    const userData = localStorage.getItem('userData');
+    if (userData) {
+      setCurrentUser(JSON.parse(userData));
     }
-  };
-
-  // Call test connection when component mounts
-  React.useEffect(() => {
-    testConnection();
   }, []);
 
   const handleSendInvite = async () => {
-    setError('');
-    setSuccess('');
-
-    if (!email) {
-      setError('Please enter an email address');
-      return;
-    }
-
     try {
-      console.log('Current user data:', currentUser);
-      console.log('Attempting to verify email:', email);
+      setIsLoading(true);
+      setError('');
+      setSuccess('');
 
-      const verifyResponse = await axios.get(
-        `http://localhost:5000/api/share/verify-email/${email}`
-      );
+      if (!email) {
+        setError('Please enter an email address');
+        return;
+      }
+
+      if (!currentUser?.email || !currentUser?.username) {
+        setError('User session not found. Please login again.');
+        return;
+      }
+
+      // First verify email
+      const verifyResponse = await api.get(`/api/share/verify-email/${email}`);
       console.log('Verify response:', verifyResponse.data);
 
       if (!verifyResponse.data.exists) {
@@ -46,81 +50,77 @@ const ShareModal = ({ onClose, currentUser }) => {
         return;
       }
 
+      // Send invite
       const shareData = {
         sharedBy: currentUser.email,
         sharerUsername: currentUser.username,
         inviteeEmail: email,
         permission
       };
-      
-      console.log('Sending invite with data:', shareData);
 
-      const response = await axios.post(
-        'http://localhost:5000/api/share/invite', 
-        shareData
-      );
-
+      const response = await api.post('/api/share/invite', shareData);
       console.log('Invite response:', response.data);
 
-      if (response.status === 201) {
-        setSuccess('Invite sent successfully!');
-        setEmail('');
-      }
+      setSuccess('Dashboard shared successfully!');
+      setEmail('');
+      alert(`Dashboard has been shared successfully with ${email}`);
     } catch (error) {
-      console.error('Full error details:', error);
-      console.error('Error response:', error.response?.data);
-      setError(
-        error.response?.data?.error || 
-        error.response?.data?.message || 
-        'Failed to send invite. Please try again.'
-      );
+      console.error('Error in handleSendInvite:', error);
+      if (error.code === 'ERR_NETWORK') {
+        setError('Network error. Please check your connection and try again.');
+      } else {
+        setError(error.response?.data?.message || 'Failed to send invite. Please try again.');
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleCopyLink = async () => {
     try {
-      console.log('Current user data:', currentUser);
-      
+      setIsLoading(true);
+      setError('');
+      setSuccess('');
+
+      if (!currentUser?.email || !currentUser?.username) {
+        setError('User session not found. Please login again.');
+        return;
+      }
+
       const shareData = {
         sharedBy: currentUser.email,
         sharerUsername: currentUser.username,
-        permission: permission,
+        permission,
         timestamp: Date.now()
       };
-      
+
       const shareToken = btoa(JSON.stringify(shareData));
       const shareUrl = `${window.location.origin}/shared/${shareToken}`;
-      
-      console.log('Creating share link with data:', {
-        token: shareToken,
-        ...shareData
-      });
 
-      const response = await axios.post(
-        'http://localhost:5000/api/share/create-link',
-        {
-          token: shareToken,
-          ...shareData
-        }
-      );
+      const response = await api.post('/api/share/create-link', {
+        token: shareToken,
+        sharedBy: currentUser.email,
+        sharerUsername: currentUser.username,
+        permission
+      });
 
       console.log('Create link response:', response.data);
 
       await navigator.clipboard.writeText(shareUrl);
-      setSuccess('Link copied to clipboard!');
-      setError('');
+      setSuccess('Share link has been copied to clipboard!');
+      alert('Share link has been copied to your clipboard!');
     } catch (error) {
-      console.error('Full error details:', error);
-      console.error('Error response:', error.response?.data);
-      setError(
-        error.response?.data?.error || 
-        error.response?.data?.message || 
-        'Failed to generate sharing link. Please try again.'
-      );
+      console.error('Error in handleCopyLink:', error);
+      if (error.code === 'ERR_NETWORK') {
+        setError('Network error. Please check your connection and try again.');
+      } else {
+        setError(error.response?.data?.message || 'Failed to generate sharing link. Please try again.');
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  // Rest of your component remains the same
   return (
     <div className="modal-overlay">
       <div className="modal-content">
@@ -130,6 +130,7 @@ const ShareModal = ({ onClose, currentUser }) => {
             className="permission-dropdown"
             value={permission}
             onChange={(e) => setPermission(e.target.value)}
+            disabled={isLoading}
           >
             <option value="Edit">Can Edit</option>
             <option value="View">Can View</option>
@@ -146,12 +147,14 @@ const ShareModal = ({ onClose, currentUser }) => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className={error ? 'error-input' : ''}
+              disabled={isLoading}
             />
             <button 
               className="send-invite-button"
               onClick={handleSendInvite}
+              disabled={isLoading}
             >
-              Send Invite
+              {isLoading ? 'Sending...' : 'Send Invite'}
             </button>
           </div>
           
@@ -160,8 +163,9 @@ const ShareModal = ({ onClose, currentUser }) => {
             <button 
               className="copy-link-button"
               onClick={handleCopyLink}
+              disabled={isLoading}
             >
-              Copy Link
+              {isLoading ? 'Generating...' : 'Copy Link'}
             </button>
           </div>
           
