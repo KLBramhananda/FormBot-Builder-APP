@@ -17,8 +17,6 @@ function App() {
         <Route path="/dashboard" element={<Dashboard/>}/>
         <Route path="/settings" element={<Settings/>}/>
         <Route path="/shared/:token" element={<SharedDashboardRedirect />} />
-        <Route path="/shared/:token" element={<SharedDashboardRedirect />} />
-
       </Routes>
     </Router>
   );

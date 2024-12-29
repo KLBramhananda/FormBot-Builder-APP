@@ -60,7 +60,8 @@ const Dashboard = () => {
   });
 
   const [sharedDashboards, setSharedDashboards] = useState([]);
-  const [currentDashboard, setCurrentDashboard] = useState('own');
+  const [currentDashboard, setCurrentDashboard] = useState("own");
+  const [activeSharedData, setActiveSharedData] = useState(null);
 
   useEffect(() => {
     const fetchSharedDashboards = async () => {
@@ -70,10 +71,10 @@ const Dashboard = () => {
         );
         setSharedDashboards(response.data);
       } catch (error) {
-        console.error('Error fetching shared dashboards:', error);
+        console.error("Error fetching shared dashboards:", error);
       }
     };
-    
+
     if (currentUser.email) {
       fetchSharedDashboards();
     }
@@ -203,44 +204,39 @@ const Dashboard = () => {
     setItemToDelete(null);
   };
 
-  // Update dropdown options
-  const renderWorkspaceDropdown = () => (
-    <select
-      className="workspace-dropdown"
-      onChange={handleDropdownChange}
-      value={currentDashboard}
-    >
-      <option value="own">
-        {currentUser.username}'s workspace
-      </option>
-      {sharedDashboards.map(share => (
-        <option key={share._id} value={share.sharedBy}>
-          {share.sharerUsername}'s workspace
-        </option>
-      ))}
-      <option value="settings">Settings</option>
-      <option value="logout">Logout</option>
-    </select>
-  );
-
   // Update handleDropdownChange
   const handleDropdownChange = (e) => {
     const value = e.target.value;
-    if (value === 'settings') {
-      navigate('/settings');
-    } else if (value === 'logout') {
+    if (value === "settings") {
+      navigate("/settings");
+    } else if (value === "logout") {
       handleLogout();
-    } else if (value === 'own') {
-      setCurrentDashboard('own');
+    } else if (value === "own") {
+      setCurrentDashboard("own");
+      setActiveSharedData(null);
     } else {
-      setCurrentDashboard(value);
-      // Load shared dashboard data
+      const sharedDashboard = sharedDashboards.find(
+        (s) => s.sharedBy === value
+      );
+      if (sharedDashboard) {
+        setCurrentDashboard(value);
+        setActiveSharedData(sharedDashboard.dashboardData);
+      }
     }
   };
 
-  const canEdit = currentDashboard === 'own' || 
-  sharedDashboards.find(s => s.sharedBy === currentDashboard)?.permission === 'Edit';
-  
+  const displayedFolders = activeSharedData
+    ? activeSharedData.folders
+    : folders;
+  const displayedContents = activeSharedData
+    ? activeSharedData.folderContents
+    : folderContents;
+
+  const canEdit =
+    currentDashboard === "own" ||
+    sharedDashboards.find((s) => s.sharedBy === currentDashboard)
+      ?.permission === "Edit";
+
   // Update the logout handler
   const handleLogout = () => {
     localStorage.removeItem("userData");
@@ -255,11 +251,14 @@ const Dashboard = () => {
           <select
             className="workspace-dropdown"
             onChange={handleDropdownChange}
-            value="dashboard"
+            value={currentDashboard}
           >
-            <option value="dashboard" disabled hidden>
-            {currentUser.username ? `${currentUser.username}'s workspace` : 'workspace'}
-            </option>
+            <option value="own">{currentUser.username}'s workspace</option>
+            {sharedDashboards.map((share) => (
+              <option key={share._id} value={share.sharedBy}>
+                {share.sharerUsername}'s workspace
+              </option>
+            ))}
             <option value="settings">Settings</option>
             <option value="logout">Logout</option>
           </select>
@@ -325,12 +324,15 @@ const Dashboard = () => {
 
       {/* Folder creation modal */}
       {showFolderPrompt && (
-          <div className="modal-overlay" onClick={(e) => {
+        <div
+          className="modal-overlay"
+          onClick={(e) => {
             // Only close if clicking the overlay, not the modal content
-            if (e.target.className === 'modal-overlay') {
+            if (e.target.className === "modal-overlay") {
               setShowFolderPrompt(false);
             }
-          }}>
+          }}
+        >
           <div className="modal-content">
             <h3>Create New Folder</h3>
             <input
@@ -349,12 +351,15 @@ const Dashboard = () => {
 
       {/* Typebot creation modal */}
       {showTypebotPrompt && (
-          <div className="modal-overlay" onClick={(e) => {
+        <div
+          className="modal-overlay"
+          onClick={(e) => {
             // Only close if clicking the overlay, not the modal content
-            if (e.target.className === 'modal-overlay') {
+            if (e.target.className === "modal-overlay") {
               setShowTypebotPrompt(false);
             }
-          }}>
+          }}
+        >
           <div className="modal-content">
             <h3>Create New Typebot</h3>
             <input
@@ -375,12 +380,15 @@ const Dashboard = () => {
 
       {/* Delete confirmation modal */}
       {showDeletePrompt && (
-          <div className="modal-overlay" onClick={(e) => {
+        <div
+          className="modal-overlay"
+          onClick={(e) => {
             // Only close if clicking the overlay, not the modal content
-            if (e.target.className === 'modal-overlay') {
+            if (e.target.className === "modal-overlay") {
               setShowDeletePrompt(false);
             }
-          }}>
+          }}
+        >
           <div className="modal-content">
             <h3>Delete Confirmation</h3>
             <p>Are you sure you want to delete this {itemToDelete?.type}?</p>

@@ -32,65 +32,25 @@ router.get('/verify-email/:email', async (req, res) => {
 // Send invite endpoint
 router.post('/invite', async (req, res) => {
   try {
-    console.log('Received invite request with body:', req.body);
+    const { sharedBy, sharerUsername, inviteeEmail, permission, dashboardData } = req.body;
     
-    const { sharedBy, sharerUsername, inviteeEmail, permission } = req.body;
-    
-    // Validate required fields
-    if (!sharedBy || !sharerUsername || !inviteeEmail || !permission) {
-      console.error('Missing required fields:', { sharedBy, sharerUsername, inviteeEmail, permission });
-      return res.status(400).json({ 
-        message: 'Missing required fields',
-        details: { sharedBy, sharerUsername, inviteeEmail, permission }
-      });
-    }
-
-    // Check if invitee exists
-    console.log('Checking if invitee exists:', inviteeEmail);
     const invitee = await User.findOne({ email: inviteeEmail });
-    console.log('Invitee found:', !!invitee);
-    
     if (!invitee) {
       return res.status(404).json({ message: 'User not found' });
     }
-
-    // Check if share already exists
-    console.log('Checking for existing share');
-    const existingShare = await Share.findOne({
-      sharedBy,
-      inviteeEmail,
-      type: 'invite'
-    });
-
-    let share;
-    if (existingShare) {
-      console.log('Updating existing share');
-      existingShare.permission = permission;
-      share = await existingShare.save();
-    } else {
-      console.log('Creating new share');
-      share = new Share({
-        sharedBy,
-        sharerUsername,
-        inviteeEmail,
-        permission,
-        type: 'invite'
-      });
-      share = await share.save();
-    }
     
-    console.log('Share saved successfully:', share);
-    res.status(201).json({ 
-      message: 'Invite sent successfully',
-      share: share
+    const share = new Share({
+      sharedBy,
+      sharerUsername,
+      inviteeEmail,
+      permission,
+      dashboardData
     });
+    
+    await share.save();
+    res.status(201).json({ message: 'Invite sent successfully', share });
   } catch (error) {
-    console.error('Full error details:', error);
-    res.status(500).json({ 
-      message: 'Error sending invite',
-      error: error.message,
-      stack: error.stack
-    });
+    res.status(500).json({ message: 'Error sending invite' });
   }
 });
 
@@ -133,6 +93,41 @@ router.post('/create-link', async (req, res) => {
       error: error.message,
       stack: error.stack
     });
+  }
+});
+
+router.get('/:shareId', async (req, res) => {
+  try {
+    const share = await Share.findById(req.params.shareId);
+    if (!share) {
+      return res.status(404).json({ message: 'Share not found' });
+    }
+    res.json(share);
+  } catch (error) {
+    res.status(500).json({ message: 'Error retrieving share' });
+  }
+});
+
+router.get('/verify-token/:token', async (req, res) => {
+  try {
+    const { token } = req.params;
+    
+    // Find share by token
+    const share = await Share.findOne({ token });
+    
+    if (!share) {
+      return res.status(404).json({ message: 'Share not found' });
+    }
+
+    // Return share data
+    res.json({
+      sharedBy: share.sharedBy,
+      sharerUsername: share.sharerUsername,
+      permission: share.permission
+    });
+  } catch (error) {
+    console.error('Error verifying share token:', error);
+    res.status(500).json({ message: 'Error verifying share token' });
   }
 });
 
