@@ -12,7 +12,7 @@ const app = express();
 
 // CORS configuration
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type']
 }));
@@ -50,3 +50,6 @@ mongoose
   .catch((err) => {
     console.error('MongoDB connection error:', err);
   });
+
+
+  
