@@ -4,6 +4,7 @@ import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./LoginPage.css";
+import BASE_URL from '../context/App';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -37,7 +38,7 @@ const LoginPage = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/users/login",
+        `${BASE_URL}/api/users/login`,
         {
           email,
           password,

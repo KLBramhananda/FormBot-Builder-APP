@@ -4,6 +4,7 @@ import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./SignupPage.css";
+import BASE_URL from '../context/App';
 
 const SignupPage = () => {
   const navigate = useNavigate();
@@ -77,7 +78,7 @@ const SignupPage = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/users/signup",
+        `${BASE_URL}/api/users/signup`,
         {
           username: user,
           email,
