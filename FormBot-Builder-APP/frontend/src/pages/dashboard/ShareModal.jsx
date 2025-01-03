@@ -121,16 +121,6 @@ const ShareModal = ({ onClose }) => {
     <div className="modal-overlay">
       <div className="modal-content">
         <div className="modal-header">
-          <h2>Share Dashboard</h2>
-          <select
-            className="permission-dropdown"
-            value={permission}
-            onChange={(e) => setPermission(e.target.value)}
-            disabled={isLoading}
-          >
-            <option value="Edit">Can Edit</option>
-            <option value="View">Can View</option>
-          </select>
           <button className="close-button" onClick={onClose}>
             ×
           </button>
@@ -138,7 +128,18 @@ const ShareModal = ({ onClose }) => {
 
         <div className="modal-body">
           <div className="email-section">
-            <h3>Share via Email</h3>
+            <h2>
+              Invite by Email
+              <select
+                className="permission-dropdown"
+                value={permission}
+                onChange={(e) => setPermission(e.target.value)}
+                disabled={isLoading}
+              >
+                <option value="Edit">Edit</option>
+                <option value="View">View</option>
+              </select>
+            </h2>
             <input
               type="email"
               placeholder="Enter email address"
@@ -157,7 +158,7 @@ const ShareModal = ({ onClose }) => {
           </div>
 
           <div className="link-section">
-            <h3>Share via Link</h3>
+            <h2>Share via Link</h2>
             <button
               className="copy-link-button"
               onClick={handleCopyLink}

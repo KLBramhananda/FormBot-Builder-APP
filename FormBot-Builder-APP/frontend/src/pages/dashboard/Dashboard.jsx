@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import ShareModal from "./ShareModal";
+import Workspace from '../../components/Workspace';
+import {App} from '../../components/Workspace';
 import "./Dashboard.css";
 
 const Dashboard = () => {
@@ -47,6 +49,13 @@ const Dashboard = () => {
 
   // State for tracking items marked for deletion
   const [itemToDelete, setItemToDelete] = useState(null);
+
+  const [activeWorkspace, setActiveWorkspace] = useState(null);
+
+// Add handler for typebot click
+const handleTypebotClick = (typebot) => {
+  setActiveWorkspace(typebot);
+};
 
   // Replace the currentUser state
   const [currentUser, setCurrentUser] = useState(() => {
@@ -245,211 +254,221 @@ const Dashboard = () => {
 
   return (
     <div className={`dashboard-container ${theme}`}>
-      {/* Navbar for user and theme controls */}
-      <div className="dashboard-navbar">
-        <div className="dropdown-container">
-          <select
-            className="workspace-dropdown"
-            onChange={handleDropdownChange}
-            value={currentDashboard}
-          >
-            <option value="own">{currentUser.username}'s workspace</option>
-            {sharedDashboards.map((share) => (
-              <option key={share._id} value={share.sharedBy}>
-                {share.sharerUsername}'s workspace
-              </option>
-            ))}
-            <option value="settings">Settings</option>
-            <option value="logout">Logout</option>
-          </select>
-        </div>
-        <div className="navbar-right">
-          <p className={`light ${theme === "dark" ? "theme-active" : ""}`}>
-            Light
-          </p>
-          <label className="toggle-switch">
-            <input
-              type="checkbox"
-              checked={theme === "light"}
-              onChange={toggleTheme}
-            />
-            <span className="slider"></span>
-          </label>
-          <p className={`dark ${theme === "dark" ? "theme-active" : ""}`}>
-            Dark
-          </p>
-          <button
-            className="share-button"
-            onClick={() => setShowShareModal(true)}
-          >
-            Share
-          </button>
-        </div>
-      </div>
-
-      {/* Actions and content management */}
-      {canEdit && (
-        <div className="dashboard-actions">
-          <button
-            className="action-button"
-            onClick={() => setShowFolderPrompt(true)}
-          >
-            <img src="/assets/images/folder.png" alt="" /> Create a folder
-          </button>
-          {folders.map((folder) => (
-            <div
-              key={folder.id}
-              className={`tab ${
-                selectedFolder === folder.id ? "active-tab" : ""
-              }`}
-              onClick={() =>
-                setSelectedFolder((prevSelectedFolder) =>
-                  prevSelectedFolder === folder.id ? null : folder.id
-                )
-              }
-            >
-              {folder.name}
-              <img
-                src="/assets/images/delete.png"
-                alt="delete"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleDeleteConfirmation("folder", folder.id);
-                }}
-              />
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* Folder creation modal */}
-      {showFolderPrompt && (
-        <div
-          className="modal-overlay"
-          onClick={(e) => {
-            // Only close if clicking the overlay, not the modal content
-            if (e.target.className === "modal-overlay") {
-              setShowFolderPrompt(false);
-            }
-          }}
-        >
-          <div className="modal-content">
-            <h3>Create New Folder</h3>
-            <input
-              type="text"
-              placeholder="Enter folder name"
-              value={newFolderName}
-              onChange={(e) => setNewFolderName(e.target.value)}
-            />
-            <div className="modal-buttons">
-              <button onClick={handleCreateFolder}>Create</button>
-              <button onClick={() => setShowFolderPrompt(false)}>Cancel</button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Typebot creation modal */}
-      {showTypebotPrompt && (
-        <div
-          className="modal-overlay"
-          onClick={(e) => {
-            // Only close if clicking the overlay, not the modal content
-            if (e.target.className === "modal-overlay") {
-              setShowTypebotPrompt(false);
-            }
-          }}
-        >
-          <div className="modal-content">
-            <h3>Create New Typebot</h3>
-            <input
-              type="text"
-              placeholder="Enter typebot name"
-              value={newTypebotName}
-              onChange={(e) => setNewTypebotName(e.target.value)}
-            />
-            <div className="modal-buttons">
-              <button onClick={handleCreateTypebot}>Create</button>
-              <button onClick={() => setShowTypebotPrompt(false)}>
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Delete confirmation modal */}
-      {showDeletePrompt && (
-        <div
-          className="modal-overlay"
-          onClick={(e) => {
-            // Only close if clicking the overlay, not the modal content
-            if (e.target.className === "modal-overlay") {
-              setShowDeletePrompt(false);
-            }
-          }}
-        >
-          <div className="modal-content">
-            <h3>Delete Confirmation</h3>
-            <p>Are you sure you want to delete this {itemToDelete?.type}?</p>
-            <div className="modal-buttons">
-              <button className="confirm-button" onClick={handleDelete}>
-                Confirm
-              </button>
-              <button
-                className="cancel-button"
-                onClick={() => setShowDeletePrompt(false)}
+      {activeWorkspace ? (
+        <Workspace typebot={activeWorkspace} onBack={() => setActiveWorkspace(null)} />
+      ) : (
+        <>
+          <div className="dashboard-navbar">
+            <div className="dropdown-container">
+              <select
+                className="workspace-dropdown"
+                onChange={handleDropdownChange}
+                value={currentDashboard}
               >
-                Cancel
+                <option value="own">{currentUser.username}'s workspace</option>
+                {sharedDashboards.map((share) => (
+                  <option key={share._id} value={share.sharedBy}>
+                    {share.sharerUsername}'s workspace
+                  </option>
+                ))}
+                <option value="settings">Settings</option>
+                <option value="logout">Logout</option>
+              </select>
+            </div>
+            <div className="navbar-right">
+              <p className={`light ${theme === "dark" ? "theme-active" : ""}`}>
+                Light
+              </p>
+              <label className="toggle-switch">
+                <input
+                  type="checkbox"
+                  checked={theme === "light"}
+                  onChange={toggleTheme}
+                />
+                <span className="slider"></span>
+              </label>
+              <p className={`dark ${theme === "dark" ? "theme-active" : ""}`}>
+                Dark
+              </p>
+              <button
+                className="share-button"
+                onClick={() => setShowShareModal(true)}
+              >
+                Share
               </button>
             </div>
           </div>
-        </div>
-      )}
 
-      {/* Displaying typebots */}
-      <div className="dashboard-cards">
-        <div
-          className="card create-card"
-          onClick={() => setShowTypebotPrompt(true)}
-        >
-          <img src="/assets/images/plus.png" alt="create" />
-          <div className="typebot-name">Create a typebot</div>
-        </div>
-        {selectedFolder
-          ? folderContents[selectedFolder]?.map((typebot) => (
-              <div key={typebot.id} className="card typebot-card">
-                <span
-                  className="delete-icon"
+          {canEdit && (
+            <div className="dashboard-actions">
+              <button
+                className="action-button"
+                onClick={() => setShowFolderPrompt(true)}
+              >
+                <img src="/assets/images/folder.png" alt="" /> Create a folder
+              </button>
+              {folders.map((folder) => (
+                <div
+                  key={folder.id}
+                  className={`tab ${selectedFolder === folder.id ? "active-tab" : ""}`}
                   onClick={() =>
-                    handleDeleteConfirmation("typebot", typebot.id)
+                    setSelectedFolder((prevSelectedFolder) =>
+                      prevSelectedFolder === folder.id ? null : folder.id
+                    )
                   }
                 >
-                  <img src="/assets/images/delete.png" alt="delete" />
-                </span>
-                <div className="typebot-name">{typebot.name}</div>
-              </div>
-            ))
-          : folderContents["mainPage"]?.map((typebot) => (
-              <div key={typebot.id} className="card typebot-card">
-                <span
-                  className="delete-icon"
-                  onClick={() =>
-                    handleDeleteConfirmation("typebot", typebot.id)
+                  {folder.name}
+                  <img
+                    src="/assets/images/delete.png"
+                    alt="delete"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDeleteConfirmation("folder", folder.id);
+                    }}
+                  />
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Folder creation modal */}
+          {showFolderPrompt && (
+              <div
+                className="modal-overlay"
+                onClick={(e) => {
+                  if (e.target.className === "modal-overlay") {
+                    setShowFolderPrompt(false);
                   }
-                >
-                  <img src="/assets/images/delete.png" alt="delete" />
-                </span>
-                <div className="typebot-name">{typebot.name}</div>
+                }}
+              >
+                <div className="modal-content">
+                  <h3>Create New Folder</h3>
+                  <input
+                    type="text"
+                    placeholder="Enter folder name"
+                    value={newFolderName}
+                    onChange={(e) => setNewFolderName(e.target.value)}
+                  />
+                  <div className="modal-buttons">
+                    <button onClick={handleCreateFolder}>Create</button>
+                    <button onClick={() => setShowFolderPrompt(false)}>Cancel</button>
+                  </div>
+                </div>
               </div>
-            ))}
+            )}
+
+          {/* Typebot creation modal */}
+          {showTypebotPrompt && (
+            <div
+              className="modal-overlay"
+              onClick={(e) => {
+                // Only close if clicking the overlay, not the modal content
+                if (e.target.className === "modal-overlay") {
+                  setShowTypebotPrompt(false);
+                }
+              }}
+            >
+              <div className="modal-content">
+                <h3>Create New Typebot</h3>
+                <input
+                  type="text"
+                  placeholder="Enter typebot name"
+                  value={newTypebotName}
+                  onChange={(e) => setNewTypebotName(e.target.value)}
+                />
+                <div className="modal-buttons">
+                  <button onClick={handleCreateTypebot}>Create</button>
+                  <button onClick={() => setShowTypebotPrompt(false)}>
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Delete confirmation modal */}
+          {showDeletePrompt && (
+            <div
+              className="modal-overlay"
+              onClick={(e) => {
+                // Only close if clicking the overlay, not the modal content
+                if (e.target.className === "modal-overlay") {
+                  setShowDeletePrompt(false);
+                }
+              }}
+            >
+              <div className="modal-content">
+                <h3>Delete Confirmation</h3>
+                <p>Are you sure you want to delete this {itemToDelete?.type}?</p>
+                <div className="modal-buttons">
+                  <button className="confirm-button" onClick={handleDelete}>
+                    Confirm
+                  </button>
+                  <button
+                    className="cancel-button"
+                    onClick={() => setShowDeletePrompt(false)}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Displaying typebots */}
+          <div className="dashboard-cards">
+              <div
+                className="card create-card"
+                onClick={() => setShowTypebotPrompt(true)}
+              >
+                <img src="/assets/images/plus.png" alt="create" />
+                <div className="typebot-name">Create a typebot</div>
+              </div>
+              {selectedFolder
+                ? folderContents[selectedFolder]?.map((typebot) => (
+                    <div
+                      key={typebot.id}
+                      className="card typebot-card"
+                      onClick={() => handleTypebotClick(typebot)}
+                    >
+                      <span
+                        className="delete-icon"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDeleteConfirmation("typebot", typebot.id);
+                        }}
+                      >
+                        <img src="/assets/images/delete.png" alt="delete" />
+                      </span>
+                      <div className="typebot-name">{typebot.name}</div>
+                    </div>
+                  ))
+                : folderContents["mainPage"]?.map((typebot) => (
+                    <div
+                      key={typebot.id}
+                      className="card typebot-card"
+                      onClick={() => handleTypebotClick(typebot)}
+                    >
+                      <span
+                        className="delete-icon"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDeleteConfirmation("typebot", typebot.id);
+                        }}
+                      >
+                        <img src="/assets/images/delete.png" alt="delete" />
+                      </span>
+                      <div className="typebot-name">{typebot.name}</div>
+                    </div>
+                  ))}
+            </div>
+
+            {showShareModal && (
+              <ShareModal onClose={() => setShowShareModal(false)} />
+            )}
+          </>
+      )}
       </div>
-
-      {/* Share modal */}
-      {showShareModal && (
-        <ShareModal onClose={() => setShowShareModal(false)} />
-      )}
-    </div>
   );
 };
 

@@ -1,74 +1,152 @@
-.settings-container {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 20px;
+body {
+  background-color: #111;
+  font-family: Arial, sans-serif;
 }
 
-.settings-container h2 {
-  text-align: center;
-  margin-bottom: 30px;
-  font-size: 24px;
+.settings-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 50px 0 50px 0 !important;
 }
 
 .settings-form {
-  background: black;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  margin-top: 30px;
 }
 
-.input-group {
+.input-container {
+  display: flex;
+  align-items: center; /* Vertically center-align items */
+  justify-content: space-between; /* Distribute items equally */
+  border: 1px solid #fff;
+  border-radius: 8px;
+  padding: 3px 15px; /* Add padding for better spacing */
+  margin-bottom: 15px;
+}
+
+.input-icon, .toggle-icon {
+  flex-shrink: 0; /* Prevent icons from resizing */
+  width: 20px;
+  height: 20px; /* Ensure consistent icon size */
+  display: flex;
+  align-items: center; /* Center-align icon vertically */
+  justify-content: center; /* Center-align icon horizontally */
+  cursor: pointer;
+}
+
+.text-input {
+  flex: 1; /* Take up remaining space */
+  background: none;
+  border: none;
+  outline: none;
+  color: #fff;
+  margin-bottom: -3px;
+}
+
+
+.toggle-icon {
+  width: 20px;
+  cursor: pointer;
+}
+
+.update {
+  cursor: pointer;
+  background-color: #1A5FFF;
+  border-radius: 25px;
+  height:40px;
+  width: 400px;
+  color: #fff;
+  margin-top: 10px;
+  font-weight: 600;
+}
+
+.alert {
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.alert.error {
+  background-color: transparent;
+  color: #f40820;
+}
+
+.alert.success {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+
+.logout-section button {
+  background-color: transparent;
+  border: none;
+  margin-left: -690px;
+  margin-top: 180px !important;
+  position: fixed;
+}
+
+.logout-section img {
+  background-color: transparent;
+  display: block; /* To remove any default inline behavior */
+}
+
+.alert {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+  z-index: 9999;
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  margin-bottom: 20px;
+  align-items: stretch;
 }
 
-.input-group input {
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+.alert-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+  margin-bottom: 10px;
 }
 
-.input-group input:focus {
-  outline: none;
-  border-color: #007bff;
+.alert-title {
+  font-size: 18px;
 }
 
-.input-group button {
-  background-color: #007bff;
-  color: #ffffff;
+.close-btn {
+  background: none;
   border: none;
-  padding: 12px;
-  border-radius: 5px;
+  color: #888;
+  font-size: 18px;
   cursor: pointer;
-  font-size: 14px;
-  transition: background-color 0.3s;
+  padding: 0;
+  margin: 0;
 }
 
-.input-group button:hover {
-  background-color: #0056b3;
+.close-btn:hover {
+  color: #333;
 }
 
-button {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
-  background-color: #007bff;
-  color: white;
-  cursor: pointer;
+.alert-body {
+  font-size: 16px;
+  color: #333;
 }
 
-button:hover {
-  background-color: #0056b3;
+.alert.error {
+  background-color: white;
+  color: #fe041d;
 }
 
-.logout-button {
-  background-color: #dc3545;
-  width: 100%;
-  margin-top: 20px;
-}
-
-.logout-button:hover {
-  background-color: #c82333;
+.alert.success {
+  background-color: #d4edda;
+  color: #155724;
 }

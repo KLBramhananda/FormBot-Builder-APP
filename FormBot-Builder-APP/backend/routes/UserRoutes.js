@@ -95,5 +95,37 @@ router.post("/login", async (req, res) => {
   }
 });
 
+router.post('/api/typebots/save', async (req, res) => {
+  try {
+    const { typebotId, formName, flowElements, theme, lastModified } = req.body;
+    
+    // Validate the data
+    if (!typebotId || !flowElements) {
+      return res.status(400).json({ error: 'Missing required fields' });
+    }
+
+    // Save to your database (example using MongoDB)
+    const savedTypebot = await TypebotModel.findByIdAndUpdate(
+      typebotId,
+      {
+        formName,
+        flowElements,
+        theme,
+        lastModified
+      },
+      { new: true }
+    );
+
+    res.json({
+      success: true,
+      data: savedTypebot
+    });
+
+  } catch (error) {
+    console.error('Save error:', error);
+    res.status(500).json({ error: 'Failed to save typebot' });
+  }
+});
+
 
 module.exports = router;
