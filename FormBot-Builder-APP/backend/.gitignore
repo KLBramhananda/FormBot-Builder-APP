@@ -1,7 +1,6 @@
 node_modules/
 .env
-build/
 dist/
+build/
 *.log
-*.db
-.DS_Store
+*.pyc
