@@ -9,13 +9,10 @@ import "./Dashboard.css";
 const Dashboard = () => {
   const navigate = useNavigate();
 
-  // State for theme toggle
   const [theme, setTheme] = useState("light");
 
-  // State for showing share modal
   const [showShareModal, setShowShareModal] = useState(false);
 
-  // Replace the folders state
   const [folders, setFolders] = useState(() => {
     const userData = localStorage.getItem("userData");
     if (!userData) return [];
@@ -25,10 +22,8 @@ const Dashboard = () => {
     return savedFolders ? JSON.parse(savedFolders) : [];
   });
 
-  // State for tracking the selected folder
   const [selectedFolder, setSelectedFolder] = useState(null);
 
-  // Replace the folderContents state
   const [folderContents, setFolderContents] = useState(() => {
     const userData = localStorage.getItem("userData");
     if (!userData) return { mainPage: [] };
@@ -38,26 +33,21 @@ const Dashboard = () => {
     return savedContents ? JSON.parse(savedContents) : { mainPage: [] };
   });
 
-  // State for controlling modals and prompts
   const [showFolderPrompt, setShowFolderPrompt] = useState(false);
   const [showTypebotPrompt, setShowTypebotPrompt] = useState(false);
   const [showDeletePrompt, setShowDeletePrompt] = useState(false);
 
-  // State for storing new folder and Typebot names
   const [newFolderName, setNewFolderName] = useState("");
   const [newTypebotName, setNewTypebotName] = useState("");
 
-  // State for tracking items marked for deletion
   const [itemToDelete, setItemToDelete] = useState(null);
 
   const [activeWorkspace, setActiveWorkspace] = useState(null);
 
-// Add handler for typebot click
 const handleTypebotClick = (typebot) => {
   setActiveWorkspace(typebot);
 };
 
-  // Replace the currentUser state
   const [currentUser, setCurrentUser] = useState(() => {
     const userData = localStorage.getItem("userData");
     return userData
@@ -89,7 +79,6 @@ const handleTypebotClick = (typebot) => {
     }
   }, [currentUser.email]);
 
-  // Update the useEffect for saving data
   useEffect(() => {
     if (currentUser.email) {
       localStorage.setItem(
@@ -103,7 +92,6 @@ const handleTypebotClick = (typebot) => {
     }
   }, [folders, folderContents, currentUser.email]);
 
-  // Load user data and saved state from localStorage on component mount
   useEffect(() => {
     const userData = localStorage.getItem("userData");
     if (userData) {
@@ -111,14 +99,12 @@ const handleTypebotClick = (typebot) => {
     }
   }, []);
 
-  // Toggle between light and dark themes
   const toggleTheme = () => {
     const newTheme = theme === "light" ? "dark" : "light";
     setTheme(newTheme);
     document.body.className = newTheme;
   };
 
-  // Handle creating a new folder
   const handleCreateFolder = () => {
     if (newFolderName.trim()) {
       const folderExists = folders.some(
@@ -139,7 +125,6 @@ const handleTypebotClick = (typebot) => {
     }
   };
 
-  // Handle creating a new Typebot
   const handleCreateTypebot = () => {
     if (newTypebotName.trim()) {
       const existingTypebots = selectedFolder
@@ -177,13 +162,11 @@ const handleTypebotClick = (typebot) => {
     }
   };
 
-  // Confirm delete action for folders or Typebots
   const handleDeleteConfirmation = (type, id) => {
     setItemToDelete({ type, id });
     setShowDeletePrompt(true);
   };
 
-  // Handle deleting folders or Typebots
   const handleDelete = () => {
     if (itemToDelete.type === "folder") {
       setFolders(folders.filter((folder) => folder.id !== itemToDelete.id));
@@ -362,7 +345,6 @@ const handleTypebotClick = (typebot) => {
             <div
               className="modal-overlay"
               onClick={(e) => {
-                // Only close if clicking the overlay, not the modal content
                 if (e.target.className === "modal-overlay") {
                   setShowTypebotPrompt(false);
                 }
@@ -391,7 +373,6 @@ const handleTypebotClick = (typebot) => {
             <div
               className="modal-overlay"
               onClick={(e) => {
-                // Only close if clicking the overlay, not the modal content
                 if (e.target.className === "modal-overlay") {
                   setShowDeletePrompt(false);
                 }

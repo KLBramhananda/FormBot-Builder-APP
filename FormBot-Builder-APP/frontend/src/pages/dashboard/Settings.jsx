@@ -59,8 +59,7 @@ const Settings = () => {
         updateData
       );
 
-      // Check response and handle error or success
-      const isError = !response.data; // Assuming the response should contain data if successful
+      const isError = !response.data;
 
       if (isError) {
         setMessage({

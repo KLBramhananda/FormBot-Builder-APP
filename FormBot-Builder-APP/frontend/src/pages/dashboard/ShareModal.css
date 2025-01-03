@@ -23,7 +23,7 @@
   padding: 10px;
 }
 
-.permission-dropdown{
+.permission-dropdown {
   margin-left: 215px !important;
   background-color: #111;
   color: white;
@@ -39,10 +39,11 @@
   margin-bottom: 26px !important;
 }
 
-.send-invite-button, .copy-link-button {
+.send-invite-button,
+.copy-link-button {
   width: 100%;
   padding: 12px;
-  background-color: #0D6EFD;
+  background-color: #0d6efd;
   border: none;
   border-radius: 15px;
   color: #ffffff;
@@ -57,7 +58,6 @@
   font-weight: normal;
 }
 
-/* Folder/Card Creation Modal Styles */
 .create-modal {
   background-color: #1e1e1e;
   padding: 20px;
@@ -91,7 +91,7 @@
 
 .create-modal-buttons .done-button {
   background: none;
-  color: #0D6EFD;
+  color: #0d6efd;
 }
 
 .create-modal-buttons .cancel-button {

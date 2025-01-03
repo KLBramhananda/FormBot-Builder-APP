@@ -58,7 +58,6 @@
   width: 20%;
   text-align: left;
   font-size: 15px !important;
-
 }
 
 .Signup-container input {
@@ -98,8 +97,7 @@
   margin-bottom: 10px;
 }
 
-
-.Signup-container p span{
+.Signup-container p span {
   cursor: pointer;
 }
 
@@ -107,11 +105,11 @@
   background-color: #fff;
   color: #007bff;
   border: 1px solid #007bff;
-  display: flex; /* Use flexbox for alignment */
-  align-items: center; /* Center items vertically */
-  justify-content: center; /* Center items horizontally */
-  padding: 10px 20px; /* Add some padding for a better appearance */
-  gap: 70px; /* Add space between the icon and text */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  gap: 70px;
 }
 
 .google-btn img {
@@ -121,11 +119,10 @@
 }
 
 .google-btn span {
-  margin-right: 85px; 
-  padding: 0; 
-  line-height: 1; 
+  margin-right: 85px;
+  padding: 0;
+  line-height: 1;
 }
-
 
 .right-images {
   width: 20%;
@@ -134,10 +131,10 @@
   align-items: flex-end;
 }
 
-div .bottom-elli{
+div .bottom-elli {
   margin-top: 525px;
   padding-top: 32px;
-  margin-left: -100PX;
+  margin-left: -100px;
 }
 div .elli1 {
   width: 110%;

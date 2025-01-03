@@ -14,7 +14,7 @@
   color: #ffff;
 }
 
-/* Navbar */
+
 .dashboard-navbar {
   display: flex;
   justify-content: space-between;
@@ -25,7 +25,7 @@
   position: relative;
 }
 
-/* Red horizontal line below navbar */
+
 .dashboard-navbar::after {
   content: '';
   position: absolute;
@@ -54,7 +54,7 @@
   margin-left: 250px;
 }
 
-/* Remove any existing theme-specific dropdown styles and add: */
+
 .dashboard-container.light .workspace-dropdown {
   background-color: #000;
   color: #fff;
@@ -93,7 +93,7 @@
   background-color: #0056b3;
 }
 
-/* Theme Toggle */
+
 .toggle-switch {
   position: relative;
   width: 50px;
@@ -138,7 +138,7 @@ input:checked + .slider:before {
   transform: translateX(26px);
 }
 
-/* Actions */
+
 .dashboard-actions {
   display: flex;
   align-items: center;
@@ -187,7 +187,7 @@ input:checked + .slider:before {
   cursor: pointer;
 }
 
-/* Folder Prompt */
+
 .folder-prompt {
   position: fixed;
   top: 50%;
@@ -241,7 +241,7 @@ input:checked + .slider:before {
   color: #ffffff;
 }
 
-/*.................... Cards */
+
 .dashboard-cards {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -320,7 +320,7 @@ input:checked + .slider:before {
 }
 
 
-/* Add these new styles to your Dashboard.css file */
+
 
 .modal-overlay {
   position: fixed;
@@ -328,7 +328,7 @@ input:checked + .slider:before {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: transparent;  /* Changed from rgba(0, 0, 0, 0.5) */
+  background-color: transparent; 
   display: flex;
   justify-content: center;
   align-items: center;
@@ -396,7 +396,7 @@ input:checked + .slider:before {
   height: 220px;
 }
 
-/* Update existing styles */
+
 .dashboard-cards {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 220px));

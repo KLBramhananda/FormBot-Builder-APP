@@ -64,7 +64,6 @@
   margin-top: 10px;
 }
 
-
 .password-wrapper input {
   font-family: Arial, sans-serif;
 }
@@ -104,11 +103,11 @@
   background-color: #fff;
   color: #007bff;
   border: 1px solid #007bff;
-  display: flex; /* Use flexbox for alignment */
-  align-items: center; /* Center items vertically */
-  justify-content: center; /* Center items horizontally */
-  padding: 10px 20px; /* Add some padding for a better appearance */
-  gap: 5px; /* Add space between the icon and text */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  gap: 5px;
   margin-bottom: 20px !important;
 }
 
@@ -122,8 +121,8 @@
 
 .google-btn span {
   padding: 0;
-  line-height: 1; /* Ensure the text stays on a single line */
-  white-space: nowrap; /* Prevent text wrapping to the next line */
+  line-height: 1;
+  white-space: nowrap;
 }
 
 .right-images {

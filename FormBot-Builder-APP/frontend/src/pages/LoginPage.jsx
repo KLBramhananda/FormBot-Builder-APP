@@ -20,7 +20,6 @@ const LoginPage = () => {
   };
 
   const handleLogin = async () => {
-    // Client-side validation
     if (!email || email.trim() === "") {
       setError("Email is required");
       return;
@@ -45,20 +44,17 @@ const LoginPage = () => {
         }
       );
 
-      // Store user data in localStorage
       localStorage.setItem(
         "userData",
         JSON.stringify({
-          username: response.data.username, // Backend needs to send username
+          username: response.data.username,
           email: email,
         })
       );
 
-      // Check if user has existing data
       const existingFolders = localStorage.getItem(`folders_${email}`);
       const existingContents = localStorage.getItem(`folderContents_${email}`);
 
-      // If no existing data, initialize with empty structures
       if (!existingFolders) {
         localStorage.setItem(`folders_${email}`, JSON.stringify([]));
       }
@@ -70,14 +66,14 @@ const LoginPage = () => {
           })
         );
       }
-      const pendingShareToken = localStorage.getItem('pendingShareToken');
+      const pendingShareToken = localStorage.getItem("pendingShareToken");
       if (pendingShareToken) {
         try {
           const shareData = JSON.parse(atob(pendingShareToken));
-          localStorage.setItem('activeShare', JSON.stringify(shareData));
-          localStorage.removeItem('pendingShareToken');
+          localStorage.setItem("activeShare", JSON.stringify(shareData));
+          localStorage.removeItem("pendingShareToken");
         } catch (error) {
-          console.error('Invalid share token:', error);
+          console.error("Invalid share token:", error);
         }
       }
       navigate("/Dashboard");

@@ -8,7 +8,7 @@
 
 @media (max-width: 1024px) {
   .footer {
-    padding: 40px 20px; /* Adjust padding for medium screens */
+    padding: 40px 20px;
   }
 }
 
@@ -16,7 +16,7 @@
   .footer {
     flex-direction: column;
     padding: 30px 20px;
-    text-align: center; /* Ensure footer text is centered */
+    text-align: center;
   }
 
   .footer-section {
@@ -29,7 +29,6 @@
   flex-direction: column;
   gap: 5px;
   margin-bottom: 10px !important;
-
 }
 
 .footer-logo {
@@ -59,7 +58,7 @@
 .footer p {
   font-size: 14px;
   margin: 0px !important;
-  padding-bottom: 5px !important; 
+  padding-bottom: 5px !important;
   text-align: left;
   line-height: 1.2;
 }

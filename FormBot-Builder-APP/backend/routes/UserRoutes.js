@@ -1,49 +1,44 @@
 const express = require("express");
-const Share = require('../models/Share');
+const Share = require("../models/Share");
 const User = require("../models/User");
 const router = express.Router();
 
-
-router.post('/invite', async (req, res) => {
+router.post("/invite", async (req, res) => {
   try {
     const { sharedBy, sharerUsername, inviteeEmail, permission } = req.body;
-    
-    // Check if invitee exists
+
     const invitee = await User.findOne({ email: inviteeEmail });
     if (!invitee) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ message: "User not found" });
     }
-    
-    // Create share record
+
     const share = new Share({
       sharedBy,
       sharerUsername,
       inviteeEmail,
-      permission
+      permission,
     });
-    
+
     await share.save();
-    res.status(201).json({ message: 'Invite sent successfully' });
+    res.status(201).json({ message: "Invite sent successfully" });
   } catch (error) {
-    res.status(500).json({ message: 'Error sending invite' });
+    res.status(500).json({ message: "Error sending invite" });
   }
 });
 
-router.get('/shared-dashboards/:email', async (req, res) => {
+router.get("/shared-dashboards/:email", async (req, res) => {
   try {
     const shares = await Share.find({ inviteeEmail: req.params.email });
     res.json(shares);
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching shared dashboards' });
+    res.status(500).json({ message: "Error fetching shared dashboards" });
   }
-})
+});
 
-// Signup API
 router.post("/signup", async (req, res) => {
   const { username, email, password } = req.body;
 
   try {
-    // Only check for existing email
     const existingEmail = await User.findOne({ email });
     if (existingEmail) {
       return res.status(400).json({
@@ -64,7 +59,6 @@ router.post("/signup", async (req, res) => {
   }
 });
 
-// Login API
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
   try {
@@ -84,7 +78,7 @@ router.post("/login", async (req, res) => {
     res.status(200).json({
       message: "Login successful",
       userId: user._id,
-      username: user.username, // Added username to response
+      username: user.username,
       hasFormCreated: user.hasFormCreated,
     });
   } catch (error) {
@@ -95,37 +89,33 @@ router.post("/login", async (req, res) => {
   }
 });
 
-router.post('/api/typebots/save', async (req, res) => {
+router.post("/api/typebots/save", async (req, res) => {
   try {
     const { typebotId, formName, flowElements, theme, lastModified } = req.body;
-    
-    // Validate the data
+
     if (!typebotId || !flowElements) {
-      return res.status(400).json({ error: 'Missing required fields' });
+      return res.status(400).json({ error: "Missing required fields" });
     }
 
-    // Save to your database (example using MongoDB)
     const savedTypebot = await TypebotModel.findByIdAndUpdate(
       typebotId,
       {
         formName,
         flowElements,
         theme,
-        lastModified
+        lastModified,
       },
       { new: true }
     );
 
     res.json({
       success: true,
-      data: savedTypebot
+      data: savedTypebot,
     });
-
   } catch (error) {
-    console.error('Save error:', error);
-    res.status(500).json({ error: 'Failed to save typebot' });
+    console.error("Save error:", error);
+    res.status(500).json({ error: "Failed to save typebot" });
   }
 });
-
 
 module.exports = router;

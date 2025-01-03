@@ -43,18 +43,15 @@ const Workspace = ({ typebot }) => {
     }
   }, [flowElements, typebot?.id]);
 
-  // Theme handling
   useEffect(() => {
     document.body.className = theme;
     localStorage.setItem("theme", theme);
   }, [theme]);
 
-  // Handle theme toggle with full page color change
   const toggleTheme = () => {
     const newTheme = theme === "light" ? "dark" : "light";
     setTheme(newTheme);
     document.body.className = newTheme;
-    // Update local storage
     localStorage.setItem("theme", newTheme);
   };
 
@@ -72,7 +69,6 @@ const Workspace = ({ typebot }) => {
       isEditing: true,
     };
 
-    // Add type-specific properties
     switch (elementType) {
       case "text":
         newElement = {
@@ -440,7 +436,7 @@ const Workspace = ({ typebot }) => {
                 </button>
               </div>
             </aside>
-            
+
             <section id="workspace" className="right-section">
               <p>
                 <img src="/assets/workspace-logos/flag.png" alt="" />
@@ -453,9 +449,7 @@ const Workspace = ({ typebot }) => {
                     className={`flow-element ${element.type}`}
                   >
                     {element.type === "start" ? (
-                      <div className="start-element">
-                       
-                      </div>
+                      <div className="start-element"></div>
                     ) : (
                       <>
                         <span>{element.type}</span>

@@ -3,7 +3,7 @@
   justify-content: space-between;
   align-items: center;
   background-color: black;
-  padding: 0px 140px; /* Adjusted top padding to 5px */
+  padding: 0px 140px;
   color: white;
 }
 
@@ -23,7 +23,7 @@
 }
 
 .navbar-title {
-  font-size: 15px !important; /* Reduced the font size */
+  font-size: 15px !important;
   font-weight: bold;
   margin: 0;
   display: flex;
@@ -32,26 +32,26 @@
 
 @media (max-width: 1024px) {
   .navbar {
-    padding: 0px 80px; /* Reduce padding for medium screens */
+    padding: 0px 80px;
   }
 }
 
 @media (max-width: 768px) {
   .navbar {
-    padding: 0px 20px; /* Further reduce padding for small screens */
+    padding: 0px 20px;
   }
 }
 
 .navbar-right {
   display: flex;
   gap: 15px;
-  padding-left: 70px; /* Adjust the padding for small screens */
+  padding-left: 70px;
 }
 
 @media (max-width: 768px) {
   .navbar-right {
-    padding-left: 10px; /* Reduce padding on small screens */
-    gap: 10px; /* Reduce gap between buttons */
+    padding-left: 10px;
+    gap: 10px;
   }
 }
 
@@ -66,12 +66,10 @@
   transition: all 0.3s ease;
 }
 
-
 .navbar-right .btn-transparent {
   background-color: transparent;
   border: 1px solid #6a97f9;
   margin-right: -70px !important;
-
 }
 
 .navbar-right .btn-transparent:hover {
@@ -80,7 +78,7 @@
 }
 
 .navbar-right .btn-blue {
-  background-color:  #1a5fff;
+  background-color: #1a5fff;
   border: none;
   color: #ffff;
   margin-right: 20px;

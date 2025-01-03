@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./ShareModal.css";
 
-// Create axios instance with base URL
 const api = axios.create({
   baseURL: "http://localhost:5000",
   headers: {
@@ -36,14 +35,12 @@ const ShareModal = ({ onClose }) => {
         return;
       }
 
-      // Verify email exists
       const verifyResponse = await api.get(`/api/share/verify-email/${email}`);
       if (!verifyResponse.data.exists) {
         setError("This email is not registered in our system");
         return;
       }
 
-      // Send share invite with complete dashboard data
       const dashboardData = {
         folders:
           JSON.parse(localStorage.getItem(`folders_${currentUser.email}`)) ||

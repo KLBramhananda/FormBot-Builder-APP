@@ -5,7 +5,7 @@
   justify-content: center;
   padding: 10px 10px;
   display: flex;
-  flex-direction: column; /* Ensures the content is laid out vertically */
+  flex-direction: column;
 }
 
 .body-top {
@@ -24,7 +24,7 @@
 
 .header-text {
   padding: 0px 190px;
-  text-align: center; /* Center the header text */
+  text-align: center;
 }
 
 .header-text h1 {
@@ -55,8 +55,8 @@
 .image-container {
   margin: 80px 0 380px 0;
   position: relative;
-  height: 300px; /* Set the height for the image container */
-  z-index: 1; /* Ensure it doesn't overlap footer */
+  height: 300px;
+  z-index: 1;
 }
 
 .image-container img {
@@ -65,7 +65,6 @@
   border-radius: 5px;
 }
 
-/* Background images with full size and positioned on the left and right */
 .left-image,
 .right-image {
   position: absolute;
@@ -78,51 +77,50 @@
 .left-image {
   left: 0;
   z-index: 1;
-  margin-left: 90px; 
+  margin-left: 90px;
 }
 
 .right-image {
   right: 0;
-  z-index: 1; 
+  z-index: 1;
   margin-right: 90px;
 }
 
 .main-image {
   position: relative;
-  z-index: 2; 
-  width: 75%; 
+  z-index: 2;
+  width: 75%;
   margin: 0 auto;
 }
 
-/* Media queries for responsive design */
 @media (max-width: 1024px) {
   .header-text {
-    padding: 0px 50px; /* Adjust padding for medium screens */
+    padding: 0px 50px;
   }
 
   .body-top img {
-    width: 30%; /* Make image responsive on medium screens */
+    width: 30%;
   }
 }
 
 @media (max-width: 768px) {
   .header-text {
-    padding: 0px 20px; /* Further reduce padding for small screens */
+    padding: 0px 20px;
   }
 
   .header-text h1 {
-    font-size: 30px; /* Adjust font size for small screens */
+    font-size: 30px;
   }
 
   .landing-page p {
-    font-size: 14px; /* Adjust font size for small screens */
+    font-size: 14px;
   }
 
   .create-formbot-btn {
-    padding: 12px 25px; /* Adjust button size for small screens */
+    padding: 12px 25px;
   }
 
   .image-container img {
-    width: 100%; /* Make the image responsive */ 
+    width: 100%;
   }
 }

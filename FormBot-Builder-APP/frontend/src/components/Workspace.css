@@ -1,4 +1,3 @@
-
 .workspace-navbar {
   display: flex;
   justify-content: space-between;
@@ -19,7 +18,7 @@
   margin-bottom: 2px !important;
   color: white;
 }
-.navbar-center{
+.navbar-center {
   margin-left: 250px !important;
 }
 .navbar-center button {
@@ -51,20 +50,18 @@
   background-color: #0056b3;
 }
 
-/* Theme Toggle */
 .toggle-switch1 {
   position: relative;
   width: 50px;
   height: 24px !important;
 }
-.navbar-right1 .light{
+.navbar-right1 .light {
   margin-right: -80px !important;
 }
-.navbar-right1 .dark{
+.navbar-right1 .dark {
   margin-left: -80px;
   margin-right: -50px;
 }
-
 
 .toggle-switch1 input {
   opacity: 0;
@@ -100,8 +97,6 @@
   margin-right: 10px;
 }
 
-/* Workspace.css */
-
 .flowpage-container {
   display: flex;
   background-color: #1e1d1d;
@@ -118,19 +113,18 @@
   box-sizing: border-box;
   border: 2px solid #333;
   border-radius: 10px;
-
 }
 
 .left-section p {
   margin-bottom: 10px;
-  margin-left: 10px; /* Space below the paragraph */
+  margin-left: 10px;
   color: white;
 }
 
 .left-section .custom-button {
-  display: inline-block; /* Align buttons inline */
-  width: 45%; /* Button width for two columns with some spacing */
-  margin: 5px 2.5%; /* Space between buttons */
+  display: inline-block;
+  width: 45%;
+  margin: 5px 2.5%;
   padding: 10px;
   border: none;
   background-color: #222;
@@ -138,9 +132,8 @@
   cursor: pointer;
   border-radius: 8px;
   font-weight: 700;
-
 }
-.left-box{
+.left-box {
   margin-top: 50px;
   margin-bottom: 170px;
 }
@@ -150,8 +143,6 @@
   height: auto;
   align-items: left;
 }
-
-/* Add these styles to your Workspace.css file */
 
 .custom-button {
   display: flex;
@@ -174,19 +165,19 @@
   gap: 10px;
   align-items: center;
 }
-.right-section p{
+.right-section p {
   margin-top: 70px;
   margin-left: 315px;
   background-color: #111;
   padding: 15px;
   width: 300px;
   height: 55px;
-  gap:10px !important;
+  gap: 10px !important;
   border-radius: 8px;
 }
-.right-section p img{
-    margin-right: 10px;
-    margin-left: 5px;
+.right-section p img {
+  margin-right: 10px;
+  margin-left: 5px;
 }
 
 .flow-element {
@@ -197,8 +188,6 @@
   border-radius: 8px;
   text-align: center;
 }
-
-
 
 .element-link {
   margin-top: 8px;
@@ -305,7 +294,6 @@
   text-align: left;
 }
 
-
 .copy-alert {
   position: fixed;
   bottom: 20px;
@@ -319,8 +307,20 @@
 }
 
 @keyframes fadeInOut {
-  0% { opacity: 0; transform: translateX(-50%) translateY(20px); }
-  15% { opacity: 1; transform: translateX(-50%) translateY(0); }
-  85% { opacity: 1; transform: translateX(-50%) translateY(0); }
-  100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+  }
+  15% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  85% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-20px);
+  }
 }

@@ -86,8 +86,6 @@ const SignupPage = () => {
       );
 
       if (response.status === 201) {
-        // Check if signup was successful
-        // Store user data in localStorage
         localStorage.setItem(
           "userData",
           JSON.stringify({
@@ -96,7 +94,6 @@ const SignupPage = () => {
           })
         );
 
-        // Initialize empty folders and contents for new user
         localStorage.setItem(`folders_${email}`, JSON.stringify([]));
         localStorage.setItem(
           `folderContents_${email}`,
@@ -186,7 +183,7 @@ const SignupPage = () => {
                 (!confirmPassword || password !== confirmPassword) && error
                   ? "red"
                   : "inherit",
-              color: "grey", // Makes text color transparent
+              color: "grey", 
             }}
             required
           />
