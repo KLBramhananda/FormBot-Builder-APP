@@ -3,8 +3,8 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import ShareModal from "./ShareModal";
 import Workspace from '../../components/Workspace';
-import {App} from '../../components/Workspace';
 import "./Dashboard.css";
+import BASE_URL from '../../context/App';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -66,7 +66,7 @@ const handleTypebotClick = (typebot) => {
     const fetchSharedDashboards = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/share/shared-dashboards/${currentUser.email}`
+          `${BASE_URL}/api/share/shared-dashboards/${currentUser.email}`
         );
         setSharedDashboards(response.data);
       } catch (error) {
