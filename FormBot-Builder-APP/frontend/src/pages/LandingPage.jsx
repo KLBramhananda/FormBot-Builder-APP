@@ -1,13 +1,12 @@
 import React, { useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import BASE_URL from "../context/App";
 import "./LandingPage.css";
 
 const LandingPage = () => {
   const fetchData = async () => {
     try {
-      const response = await fetch(`${BASE_URL}/api/endpoint`);
+      const response = await fetch(`http://localhost:5000/api/endpoint`);
       const data = await response.json();
       console.log("Fetched Data:", data);
     } catch (error) {
