@@ -66,7 +66,7 @@ const handleTypebotClick = (typebot) => {
     const fetchSharedDashboards = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/share/shared-dashboards/${currentUser.email}`        );
+          `http://localhost:5000/api/share/shared-dashboards/${currentUser.email}`);
         setSharedDashboards(response.data);
       } catch (error) {
         console.error("Error fetching shared dashboards:", error);
