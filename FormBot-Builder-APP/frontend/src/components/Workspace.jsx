@@ -155,6 +155,7 @@ const Workspace = ({ typebot }) => {
 
       // Show success message
       showNotification("Changes saved successfully!", "success");
+
       // Allow navigation after successful save
       return true;
     } catch (error) {

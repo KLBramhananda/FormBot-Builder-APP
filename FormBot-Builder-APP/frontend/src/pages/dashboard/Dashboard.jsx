@@ -183,8 +183,8 @@ const Dashboard = () => {
     setItemToDelete(null);
   };
 
-  const handleTypebotClick = (typebot) => {
-    setActiveWorkspace(typebot);
+  const handleTypebotClick = () => {
+    navigate(`/workspace`);
   };
 
   const handleDropdownChange = (e) => {
