@@ -212,13 +212,6 @@ const Dashboard = () => {
     navigate("/login");
   };
 
-  const displayedFolders = activeSharedData
-    ? activeSharedData.folders
-    : folders;
-  const displayedContents = activeSharedData
-    ? activeSharedData.folderContents
-    : folderContents;
-
   const canEdit =
     currentDashboard === "own" ||
     sharedDashboards.find((s) => s.sharedBy === currentDashboard)

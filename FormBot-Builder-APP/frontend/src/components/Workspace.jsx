@@ -1,22 +1,24 @@
 import React, { useState, useEffect } from "react";
 import "./Workspace.css";
-import ShareModal from "../pages/dashboard/ShareModal";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const Workspace = ({ typebot }) => {
+
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("flow");
   const [formName, setFormName] = useState(typebot?.name || "");
   const [theme, setTheme] = useState(
     () => localStorage.getItem("theme") || "dark"
   );
+
   const [flowElements, setFlowElements] = useState(() => {
     const savedElements = localStorage.getItem(`flowElements_${typebot?.id}`);
     return savedElements
       ? JSON.parse(savedElements)
       : [{ id: "start", type: "start", content: "Start" }];
   });
+
   const [showLinkModal, setShowLinkModal] = useState(false);
   const [selectedElement, setSelectedElement] = useState(null);
   const [elementLink, setElementLink] = useState("");
@@ -102,7 +104,8 @@ const Workspace = ({ typebot }) => {
           showLinkInput: false,
         };
         break;
-      // Add other element types as needed
+      default:
+        break;
     }
 
     setFlowElements((prev) => [...prev, newElement]);
@@ -152,7 +155,6 @@ const Workspace = ({ typebot }) => {
 
       // Show success message
       showNotification("Changes saved successfully!", "success");
-
       // Allow navigation after successful save
       return true;
     } catch (error) {
@@ -243,7 +245,11 @@ const Workspace = ({ typebot }) => {
   const handleLinkSubmit = () => {
     if (selectedElement && elementLink) {
       const newElement = { ...selectedElement, link: elementLink };
-      setFlowElements([...flowElements, newElement]);
+      setFlowElements((prevElements) =>
+        prevElements.map((el) =>
+          el.id === selectedElement.id ? newElement : el
+        )
+      );
       setShowLinkModal(false);
       setElementLink("");
       setSelectedElement(null);
@@ -284,11 +290,8 @@ const Workspace = ({ typebot }) => {
   };
 
   // Navigation
-  const handleClose = async () => {
-    const savedSuccessfully = await handleSave();
-    if (savedSuccessfully) {
-      navigate("/dashboard");
-    }
+  const handleClose = () => {
+    navigate("/dashboard");
   };
 
   return (
