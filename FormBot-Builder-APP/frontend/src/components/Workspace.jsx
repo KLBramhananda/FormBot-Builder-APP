@@ -1,16 +1,31 @@
 import React, { useState, useEffect } from "react";
 import "./Workspace.css";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const Workspace = ({ typebot }) => {
+  console.log("Workspace received typebot:", typebot);
 
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("flow");
-  const [formName, setFormName] = useState(typebot ? typebot.name : '');
+  const [formName, setFormName] = useState(() => {
+    const savedFormName = localStorage.getItem(`formName_${typebot?.id}`);
+    return savedFormName || (typebot ? typebot.name : '');
+  });
   const [theme, setTheme] = useState(
     () => localStorage.getItem("theme") || "dark"
   );
+
+  useEffect(() => {
+    if (typebot) {
+      setFormName(typebot.name);
+    }
+  }, [typebot]);
+
+  useEffect(() => {
+    if (typebot?.id) {
+      localStorage.setItem(`formName_${typebot.id}`, formName);
+    }
+  }, [formName, typebot?.id]);
 
   const [flowElements, setFlowElements] = useState(() => {
     const savedElements = localStorage.getItem(`flowElements_${typebot?.id}`);

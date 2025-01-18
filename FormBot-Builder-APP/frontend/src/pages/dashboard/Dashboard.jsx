@@ -2,42 +2,54 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import ShareModal from "./ShareModal";
-import Workspace from "../../components/Workspace";
+import Workspace from '../../components/Workspace';
 import "./Dashboard.css";
 
-// this is my dashboard code :
+// this is my dashboard code : 
 const Dashboard = () => {
   const navigate = useNavigate();
 
   const [theme, setTheme] = useState("light");
+
   const [showShareModal, setShowShareModal] = useState(false);
-  const [showFolderPrompt, setShowFolderPrompt] = useState(false);
-  const [showTypebotPrompt, setShowTypebotPrompt] = useState(false);
-  const [showDeletePrompt, setShowDeletePrompt] = useState(false);
-  const [newFolderName, setNewFolderName] = useState("");
-  const [newTypebotName, setNewTypebotName] = useState("");
-  const [itemToDelete, setItemToDelete] = useState(null);
-  const [activeWorkspace, setActiveWorkspace] = useState(null);
-  const [currentDashboard, setCurrentDashboard] = useState("own");
-  const [activeSharedData, setActiveSharedData] = useState(null);
-  const [sharedDashboards, setSharedDashboards] = useState([]);
-  const [selectedFolder, setSelectedFolder] = useState(null);
 
   const [folders, setFolders] = useState(() => {
     const userData = localStorage.getItem("userData");
     if (!userData) return [];
+
     const { email } = JSON.parse(userData);
     const savedFolders = localStorage.getItem(`folders_${email}`);
     return savedFolders ? JSON.parse(savedFolders) : [];
   });
 
+  const [selectedFolder, setSelectedFolder] = useState(null);
+
   const [folderContents, setFolderContents] = useState(() => {
     const userData = localStorage.getItem("userData");
     if (!userData) return { mainPage: [] };
+
     const { email } = JSON.parse(userData);
     const savedContents = localStorage.getItem(`folderContents_${email}`);
     return savedContents ? JSON.parse(savedContents) : { mainPage: [] };
   });
+
+  const [showFolderPrompt, setShowFolderPrompt] = useState(false);
+  const [showTypebotPrompt, setShowTypebotPrompt] = useState(false);
+  const [showDeletePrompt, setShowDeletePrompt] = useState(false);
+
+  const [newFolderName, setNewFolderName] = useState("");
+  const [newTypebotName, setNewTypebotName] = useState("");
+
+  const [itemToDelete, setItemToDelete] = useState(null);
+
+  const [activeWorkspace, setActiveWorkspace] = useState(null);
+
+const handleTypebotClick = (typebot) => {
+    setActiveWorkspace(typebot);
+    const navigateToWorkspace = () => navigate("/workspace");
+    navigateToWorkspace();
+};
+
 
   const [currentUser, setCurrentUser] = useState(() => {
     const userData = localStorage.getItem("userData");
@@ -49,12 +61,15 @@ const Dashboard = () => {
         };
   });
 
+  const [sharedDashboards, setSharedDashboards] = useState([]);
+  const [currentDashboard, setCurrentDashboard] = useState("own");
+  const [activeSharedData, setActiveSharedData] = useState(null);
+
   useEffect(() => {
     const fetchSharedDashboards = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/share/shared-dashboards/${currentUser.email}`
-        );
+          `http://localhost:5000/api/share/shared-dashboards/${currentUser.email}`        );
         setSharedDashboards(response.data);
       } catch (error) {
         console.error("Error fetching shared dashboards:", error);
@@ -161,7 +176,7 @@ const Dashboard = () => {
       setFolderContents(rest);
     } else if (itemToDelete.type === "typebot") {
       if (selectedFolder) {
-        //   Delete from selected folder
+        // Delete from selected folder
         setFolderContents({
           ...folderContents,
           [selectedFolder]: folderContents[selectedFolder].filter(
@@ -169,7 +184,7 @@ const Dashboard = () => {
           ),
         });
       } else {
-        //   Delete from main page
+        // Delete from main page
         setFolderContents({
           ...folderContents,
           mainPage: folderContents["mainPage"].filter(
@@ -183,11 +198,7 @@ const Dashboard = () => {
     setItemToDelete(null);
   };
 
-  const handleTypebotClick = (typebot) => {
-   setActiveWorkspace(typebot);
-   navigate(`/workspace`);
- };
-
+  // Update handleDropdownChange
   const handleDropdownChange = (e) => {
     const value = e.target.value;
     if (value === "settings") {
@@ -208,23 +219,28 @@ const Dashboard = () => {
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("userData");
-    navigate("/login");
-  };
+  const displayedFolders = activeSharedData
+    ? activeSharedData.folders
+    : folders;
+  const displayedContents = activeSharedData
+    ? activeSharedData.folderContents
+    : folderContents;
 
   const canEdit =
     currentDashboard === "own" ||
     sharedDashboards.find((s) => s.sharedBy === currentDashboard)
       ?.permission === "Edit";
 
+  // Update the logout handler
+  const handleLogout = () => {
+    localStorage.removeItem("userData");
+    navigate("/login");
+  };
+
   return (
     <div className={`dashboard-container ${theme}`}>
       {activeWorkspace ? (
-        <Workspace
-          typebot={activeWorkspace}
-          onBack={() => setActiveWorkspace(null)}
-        />
+        <Workspace typebot={activeWorkspace} onBack={() => setActiveWorkspace(null)} />
       ) : (
         <>
           <div className="dashboard-navbar">
@@ -279,9 +295,7 @@ const Dashboard = () => {
               {folders.map((folder) => (
                 <div
                   key={folder.id}
-                  className={`tab ${
-                    selectedFolder === folder.id ? "active-tab" : ""
-                  }`}
+                  className={`tab ${selectedFolder === folder.id ? "active-tab" : ""}`}
                   onClick={() =>
                     setSelectedFolder((prevSelectedFolder) =>
                       prevSelectedFolder === folder.id ? null : folder.id
@@ -304,31 +318,29 @@ const Dashboard = () => {
 
           {/* Folder creation modal */}
           {showFolderPrompt && (
-            <div
-              className="modal-overlay"
-              onClick={(e) => {
-                if (e.target.className === "modal-overlay") {
-                  setShowFolderPrompt(false);
-                }
-              }}
-            >
-              <div className="modal-content">
-                <h3>Create New Folder</h3>
-                <input
-                  type="text"
-                  placeholder="Enter folder name"
-                  value={newFolderName}
-                  onChange={(e) => setNewFolderName(e.target.value)}
-                />
-                <div className="modal-buttons">
-                  <button onClick={handleCreateFolder}>Create</button>
-                  <button onClick={() => setShowFolderPrompt(false)}>
-                    Cancel
-                  </button>
+              <div
+                className="modal-overlay"
+                onClick={(e) => {
+                  if (e.target.className === "modal-overlay") {
+                    setShowFolderPrompt(false);
+                  }
+                }}
+              >
+                <div className="modal-content">
+                  <h3>Create New Folder</h3>
+                  <input
+                    type="text"
+                    placeholder="Enter folder name"
+                    value={newFolderName}
+                    onChange={(e) => setNewFolderName(e.target.value)}
+                  />
+                  <div className="modal-buttons">
+                    <button onClick={handleCreateFolder}>Create</button>
+                    <button onClick={() => setShowFolderPrompt(false)}>Cancel</button>
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
+            )}
 
           {/* Typebot creation modal */}
           {showTypebotPrompt && (
@@ -370,9 +382,7 @@ const Dashboard = () => {
             >
               <div className="modal-content">
                 <h3>Delete Confirmation</h3>
-                <p>
-                  Are you sure you want to delete this {itemToDelete?.type}?
-                </p>
+                <p>Are you sure you want to delete this {itemToDelete?.type}?</p>
                 <div className="modal-buttons">
                   <button className="confirm-button" onClick={handleDelete}>
                     Confirm
@@ -390,58 +400,58 @@ const Dashboard = () => {
 
           {/* Displaying typebots */}
           <div className="dashboard-cards">
-            <div
-              className="card create-card"
-              onClick={() => setShowTypebotPrompt(true)}
-            >
-              <img src="/assets/images/plus.png" alt="create" />
-              <div className="typebot-name">Create a typebot</div>
+              <div
+                className="card create-card"
+                onClick={() => setShowTypebotPrompt(true)}
+              >
+                <img src="/assets/images/plus.png" alt="create" />
+                <div className="typebot-name">Create a typebot</div>
+              </div>
+              {selectedFolder
+                ? folderContents[selectedFolder]?.map((typebot) => (
+                    <div
+                      key={typebot.id}
+                      className="card typebot-card"
+                      onClick={() => handleTypebotClick(typebot)}
+                    >
+                      <span
+                        className="delete-icon"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDeleteConfirmation("typebot", typebot.id);
+                        }}
+                      >
+                        <img src="/assets/images/delete.png" alt="delete" />
+                      </span>
+                      <div className="typebot-name">{typebot.name}</div>
+                    </div>
+                  ))
+                : folderContents["mainPage"]?.map((typebot) => (
+                    <div
+                      key={typebot.id}
+                      className="card typebot-card"
+                      onClick={() => handleTypebotClick(typebot)}
+                    >
+                      <span
+                        className="delete-icon"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDeleteConfirmation("typebot", typebot.id);
+                        }}
+                      >
+                        <img src="/assets/images/delete.png" alt="delete" />
+                      </span>
+                      <div className="typebot-name">{typebot.name}</div>
+                    </div>
+                  ))}
             </div>
-            {selectedFolder
-              ? folderContents[selectedFolder]?.map((typebot) => (
-                  <div
-                    key={typebot.id}
-                    className="card typebot-card"
-                    onClick={() => handleTypebotClick(typebot)}
-                  >
-                    <span
-                      className="delete-icon"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleDeleteConfirmation("typebot", typebot.id);
-                      }}
-                    >
-                      <img src="/assets/images/delete.png" alt="delete" />
-                    </span>
-                    <div className="typebot-name">{typebot.name}</div>
-                  </div>
-                ))
-              : folderContents["mainPage"]?.map((typebot) => (
-                  <div
-                    key={typebot.id}
-                    className="card typebot-card"
-                    onClick={() => handleTypebotClick(typebot)}
-                  >
-                    <span
-                      className="delete-icon"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleDeleteConfirmation("typebot", typebot.id);
-                      }}
-                    >
-                      <img src="/assets/images/delete.png" alt="delete" />
-                    </span>
-                    <div className="typebot-name">{typebot.name}</div>
-                  </div>
-                ))}
-          </div>
 
-          {showShareModal && (
-            <ShareModal onClose={() => setShowShareModal(false)} />
-          )}
-        </>
+            {showShareModal && (
+              <ShareModal onClose={() => setShowShareModal(false)} />
+            )}
+          </>
       )}
-    </div>
+      </div>
   );
 };
 

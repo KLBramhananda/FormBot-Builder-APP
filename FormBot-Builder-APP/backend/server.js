@@ -11,7 +11,7 @@ const app = express();
 
 // CORS configuration
 app.use(cors({
-  origin: 'https://form-bot-builder-app-runfrontend.vercel.app',
+  origin: 'http://localhost:3000',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type'],
   credentials: true

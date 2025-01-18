@@ -18,10 +18,6 @@ const Settings = () => {
   });
   const [message, setMessage] = useState({ type: "", text: "" });
   const [isUpdating, setIsUpdating] = useState(false);
-  const [passwordVisibility, setPasswordVisibility] = useState({
-    oldPassword: false,
-    newPassword: false,
-  });
 
   const handleUpdate = async () => {
     try {
@@ -117,6 +113,11 @@ const Settings = () => {
     localStorage.removeItem("userData");
     navigate("/login");
   };
+
+  const [passwordVisibility, setPasswordVisibility] = useState({
+    oldPassword: false,
+    newPassword: false,
+  });
 
   const togglePasswordVisibility = (field) => {
     setPasswordVisibility((prev) => ({
