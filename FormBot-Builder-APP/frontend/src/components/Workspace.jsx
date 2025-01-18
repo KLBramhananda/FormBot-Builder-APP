@@ -7,7 +7,7 @@ const Workspace = ({ typebot }) => {
 
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("flow");
-  const [formName, setFormName] = useState(typebot?.name || "");
+  const [formName, setFormName] = useState(typebot ? typebot.name : '');
   const [theme, setTheme] = useState(
     () => localStorage.getItem("theme") || "dark"
   );
@@ -290,7 +290,6 @@ const Workspace = ({ typebot }) => {
     setActiveTab("flow");
   };
 
-  // Navigation
   const handleClose = () => {
     navigate("/dashboard");
   };

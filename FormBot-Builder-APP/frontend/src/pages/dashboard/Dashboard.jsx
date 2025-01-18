@@ -161,7 +161,7 @@ const Dashboard = () => {
       setFolderContents(rest);
     } else if (itemToDelete.type === "typebot") {
       if (selectedFolder) {
-        // Delete from selected folder
+        //   Delete from selected folder
         setFolderContents({
           ...folderContents,
           [selectedFolder]: folderContents[selectedFolder].filter(
@@ -169,7 +169,7 @@ const Dashboard = () => {
           ),
         });
       } else {
-        // Delete from main page
+        //   Delete from main page
         setFolderContents({
           ...folderContents,
           mainPage: folderContents["mainPage"].filter(
@@ -183,9 +183,10 @@ const Dashboard = () => {
     setItemToDelete(null);
   };
 
-  const handleTypebotClick = () => {
-    navigate(`/workspace`);
-  };
+  const handleTypebotClick = (typebot) => {
+   setActiveWorkspace(typebot);
+   navigate(`/workspace`);
+ };
 
   const handleDropdownChange = (e) => {
     const value = e.target.value;
