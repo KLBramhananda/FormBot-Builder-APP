@@ -7,7 +7,7 @@ import axios from "axios";
 const LandingPage = () => {
   const fetchData = async () => {
     try {
-      const response = await axios(`http://localhost:5000/api/endpoint`);
+      const response = await axios(`https://form-bot-builder-app-backrun.vercel.app/api/endpoint`);
       console.log("Fetched Data:", response);
     } catch (error) {
       console.error("Error fetching data:", error);
