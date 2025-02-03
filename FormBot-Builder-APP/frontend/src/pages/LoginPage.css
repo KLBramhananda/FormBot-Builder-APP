@@ -79,6 +79,12 @@
   color: #fff;
 }
 
+.login-btn {
+  width: 100%;
+  padding: 12px !important;
+  margin: 5px 0;
+}
+
 .login-container button {
   width: 100%;
   padding: 10px;
@@ -147,4 +153,68 @@ div .elli1 {
   width: 40%;
   margin-right: -2%;
   margin-top: -260px;
+}
+
+@media (max-width: 480px) {
+  .login-page {
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  .body-container {
+    margin-top: 30px;
+    width: 100%;
+    padding: 5px;
+  }
+
+  .left-images {
+    width: 30%;
+  }
+
+  .polly1,
+  .polly2 {
+    width: 50%;
+  }
+
+  .left-arrow {
+    left: 15px;
+    top: 15px;
+    font-size: 18px;
+  }
+
+  .left-images,
+  .right-images,
+  .bottom-elli {
+    display: none;
+  }
+
+  .login-container {
+    width: 90%;
+    margin: 50px auto;
+    padding: 20px;
+    position: relative;
+    left: 0;
+    transform: none;
+  }
+
+  .google-btn {
+    width: 100%;
+    gap: 30px !important;
+  }
+
+  .google-btn span {
+    margin-right: 30px !important;
+  }
+
+  .right-images {
+    width: 30%;
+  }
+
+  div .elli1 {
+    width: 100%;
+  }
+
+  .elli2 {
+    width: 40%;
+  }
 }

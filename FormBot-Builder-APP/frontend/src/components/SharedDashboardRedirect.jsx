@@ -17,7 +17,7 @@ const SharedDashboardRedirect = () => {
           return;
         }
 
-        const response = await axios.get(`http://localhost:5000/api/share/verify-token/${token}`);
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/share/verify-token/${token}`);
         const shareData = response.data;
 
         if (!shareData) {

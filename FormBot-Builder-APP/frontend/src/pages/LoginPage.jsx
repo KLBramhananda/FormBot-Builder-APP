@@ -37,7 +37,7 @@ const LoginPage = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/users/login",
+        `${process.env.REACT_APP_BACKEND_URL}/api/users/login`,
         {
           email,
           password,
@@ -122,7 +122,7 @@ const LoginPage = () => {
             required
           />
           {error && <p className="error-message">{error}</p>}
-          <button onClick={handleLogin}>Log In</button>
+          <button className="login-btn" onClick={handleLogin}>Log In</button>
           <p>OR</p>
           <button className="google-btn">
             <img src="./assets/logos/google-icon.jpeg" alt="" />

@@ -69,7 +69,7 @@ const handleTypebotClick = (typebot) => {
     const fetchSharedDashboards = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/share/shared-dashboards/${currentUser.email}`        );
+          `${process.env.REACT_APP_BACKEND_URL}/api/share/shared-dashboards/${currentUser.email}`        );
         setSharedDashboards(response.data);
       } catch (error) {
         console.error("Error fetching shared dashboards:", error);

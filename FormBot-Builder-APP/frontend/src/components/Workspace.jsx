@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
 import "./Workspace.css";
 import { useNavigate } from "react-router-dom";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+library.add(faBars, faTimes);
 
 const Workspace = ({ typebot }) => {
   console.log("Workspace received typebot:", typebot);
@@ -9,7 +14,7 @@ const Workspace = ({ typebot }) => {
   const [activeTab, setActiveTab] = useState("flow");
   const [formName, setFormName] = useState(() => {
     const savedFormName = localStorage.getItem(`formName_${typebot?.id}`);
-    return savedFormName || (typebot ? typebot.name : '');
+    return savedFormName || (typebot ? typebot.name : "");
   });
   const [theme, setTheme] = useState(
     () => localStorage.getItem("theme") || "dark"
@@ -38,6 +43,7 @@ const Workspace = ({ typebot }) => {
   const [selectedElement, setSelectedElement] = useState(null);
   const [elementLink, setElementLink] = useState("");
   const [unsavedChanges, setUnsavedChanges] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleBeforeUnload = (e) => {
@@ -309,15 +315,28 @@ const Workspace = ({ typebot }) => {
     navigate("/dashboard");
   };
 
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   return (
     <div className={`workspace-container ${theme}`}>
       <nav className="workspace-navbar">
         <div className="navbar-left">
+          <div className="mobile-menu-icon" onClick={toggleMenu}>
+            <FontAwesomeIcon icon={isMenuOpen ? faTimes : faBars} />
+          </div>
           <input
             type="text"
             value={formName}
             onChange={(e) => setFormName(e.target.value)}
             className="form-name-input"
+          />
+          <img
+            src="/assets/images/close.png"
+            alt="Close"
+            className="mobile-cross-icon"
+            onClick={handleClose}
           />
         </div>
         <div className="navbar-center">
@@ -368,10 +387,23 @@ const Workspace = ({ typebot }) => {
         </div>
       </nav>
 
+      <div
+        className={`menu-overlay ${isMenuOpen ? "open" : ""}`}
+        onClick={toggleMenu}
+      ></div>
+
       <div className="flowpage-container">
         {activeTab === "flow" && (
           <>
-            <aside className="left-section">
+            <aside className={`left-section ${isMenuOpen ? "open" : ""}`}>
+              {isMenuOpen && (
+                <img
+                  src="/assets/images/close.png"
+                  alt="Close"
+                  className="menu-close-icon"
+                  onClick={toggleMenu}
+                />
+              )}
               <div className="left-box">
                 <p>Bubbles</p>
                 <button
@@ -506,19 +538,21 @@ const Workspace = ({ typebot }) => {
                     ></div>
                   </div>
                 </div>
-                <table className="responses-table">
-                  <thead>
-                    <tr>
-                      <th>Submitted at</th>
-                      <th>Button 1</th>
-                      <th>Email 1</th>
-                      <th>Text 1</th>
-                      <th>Button 2</th>
-                      <th>Rating 1</th>
-                    </tr>
-                  </thead>
-                  <tbody>{/* Add your response data here */}</tbody>
-                </table>
+                <div className="responses-table-wrapper">
+                  <table className="responses-table">
+                    <thead>
+                      <tr>
+                        <th>Submitted at</th>
+                        <th>Button 1</th>
+                        <th>Email 1</th>
+                        <th>Text 1</th>
+                        <th>Button 2</th>
+                        <th>Rating 1</th>
+                      </tr>
+                    </thead>
+                    <tbody>{/* Add your response data here */}</tbody>
+                  </table>
+                </div>
               </div>
             ) : (
               <div className="no-response">

@@ -2,7 +2,7 @@
   display: flex;
   justify-content: space-around;
   padding: 50px 180px;
-  background-color: black;
+  background-color: transparent;
   color: #fff;
 }
 
@@ -24,6 +24,62 @@
     text-align: center;
   }
 }
+
+@media (max-width: 480px) {
+  .footer {
+    padding: 15px 10px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+
+  .footer-section {
+    margin-bottom: 15px !important;
+    width: 100%;
+  }
+
+  /* Make the first section (logo section) span full width */
+  .footer-section:first-child {
+    grid-column: 1 / -1;
+    text-align: center;
+  }
+
+  /* Adjust the remaining sections to 3 columns */
+  .footer-section:not(:first-child) {
+    padding: 0 5px;
+  }
+
+  .footer h4 {
+    font-size: 12px;
+    margin-bottom: 6px;
+  }
+
+  .footer-text,
+  .footer p {
+    font-size: 10px;
+    margin: 4px 0;
+  }
+
+  .footer-logo-img {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* Adjust icon size in footer links */
+  .footer-section svg {
+    width: 10px;
+    height: 10px;
+  }
+
+  /* Ensure text doesn't overflow in columns */
+  .footer-section p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
 .footer-section {
   display: flex;
   flex-direction: column;

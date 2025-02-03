@@ -14,7 +14,6 @@
   color: #ffff;
 }
 
-
 .dashboard-navbar {
   display: flex;
   justify-content: space-between;
@@ -25,9 +24,8 @@
   position: relative;
 }
 
-
 .dashboard-navbar::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: -2px;
   left: 0;
@@ -54,7 +52,6 @@
   margin-left: 250px;
 }
 
-
 .dashboard-container.light .workspace-dropdown {
   background-color: #000;
   color: #fff;
@@ -65,16 +62,15 @@
   color: black;
 }
 
-
 .navbar-right {
   display: flex;
   align-items: center;
   gap: 85px;
 }
-.navbar-right .light{
+.navbar-right .light {
   margin-right: -80px;
 }
-.navbar-right .dark{
+.navbar-right .dark {
   margin-left: -80px;
 }
 .share-button {
@@ -83,7 +79,7 @@
   border: none;
   padding: 8px 16px;
   border-radius: 5px;
-  margin-right: 25px !important;
+  margin-right: 85px !important;
   cursor: pointer;
   font-size: 14px;
   transition: background-color 0.3s;
@@ -92,7 +88,6 @@
 .share-button:hover {
   background-color: #0056b3;
 }
-
 
 .toggle-switch {
   position: relative;
@@ -137,7 +132,6 @@ input:checked + .slider {
 input:checked + .slider:before {
   transform: translateX(26px);
 }
-
 
 .dashboard-actions {
   display: flex;
@@ -186,7 +180,6 @@ input:checked + .slider:before {
   height: 16px;
   cursor: pointer;
 }
-
 
 .folder-prompt {
   position: fixed;
@@ -241,7 +234,6 @@ input:checked + .slider:before {
   color: #ffffff;
 }
 
-
 .dashboard-cards {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -267,7 +259,7 @@ input:checked + .slider:before {
 }
 
 .create-card {
-  background-color: #1A5FFF;
+  background-color: #1a5fff;
   color: #ffffff;
 }
 
@@ -319,16 +311,13 @@ input:checked + .slider:before {
   height: 16px;
 }
 
-
-
-
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: transparent; 
+  background-color: transparent;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -396,10 +385,98 @@ input:checked + .slider:before {
   height: 220px;
 }
 
-
 .dashboard-cards {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 220px));
   gap: 20px;
   padding: 20px 10%;
+}
+
+@media screen and (max-width: 768px) {
+  .dashboard-navbar {
+    padding: 8px 15px;
+    padding-bottom: 20px !important;
+    flex-direction: column;
+  }
+
+  .dropdown-container {
+    width: 100%;
+    margin: 15px 0;
+  }
+
+  .workspace-dropdown {
+    width: 95%;
+    margin-left: 0;
+    margin-right: 25px !important;
+    min-width: unset;
+  }
+
+  .navbar-right {
+    margin-top: 5px;
+    width: 100%;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .navbar-right .light,
+  .navbar-right .dark {
+    margin: 0;
+  }
+
+  .navbar-right .share-button {
+    margin-left: 125px !important;
+    margin-right: 20px !important;
+  }
+
+  .dashboard-actions {
+    margin: 35px .7%;
+    margin-right: 5px !important;
+    justify-content: center;
+  }
+
+  .dashboard-cards {
+    margin-top: 20px;
+    margin-left: -5px !important;
+    padding: 20px 3.5% !important;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  }
+
+  .card,
+  .typebot-card,
+  .create-card {
+    width: 140px !important;
+    height: 160px !important;
+  }
+
+  .share-button {
+    margin-right: 0 !important;
+  }
+
+  .workspace-dropdown option {
+    width: 50px !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .dashboard-cards {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  }
+
+  .card,
+  .typebot-card,
+  .create-card {
+    width: 120px !important;
+    height: 140px !important;
+  }
+
+  .typebot-name {
+    font-size: 14px;
+  }
+
+  .workspace-dropdown option {
+    width: 120px;
+  }
 }

@@ -149,3 +149,58 @@ body {
   background-color: #d4edda;
   color: #155724;
 }
+
+@media screen and (max-width: 768px) {
+  .settings-container {
+    padding: 30px 15px !important;
+  }
+
+  .settings-form {
+    max-width: 300px;
+  }
+
+  .update {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .input-container {
+    width: 100%;
+    margin-bottom: 12px;
+  }
+
+  .logout-section button {
+    position: static;
+    margin: 20px auto !important;
+  }
+
+  .alert {
+    width: 90%;
+    max-width: 280px;
+    padding: 15px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .settings-form {
+    max-width: 250px;
+  }
+
+  .update {
+    max-width: 250px;
+    height: 35px;
+  }
+
+  .alert {
+    max-width: 250px;
+    padding: 12px;
+  }
+
+  .alert-title {
+    font-size: 16px;
+  }
+
+  .alert-body {
+    font-size: 14px;
+  }
+}

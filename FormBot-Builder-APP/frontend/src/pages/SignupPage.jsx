@@ -77,7 +77,7 @@ const SignupPage = () => {
 
     try {
       const response = await axios.post(
-        `http://localhost:5000/api/users/signup`,
+        `${process.env.REACT_APP_BACKEND_URL}/api/users/signup`,
         {
           username: user,
           email,
@@ -189,7 +189,7 @@ const SignupPage = () => {
           />
 
           {error && <p className="error-message">{error}</p>}
-          <button onClick={handleSignUp}>Sign Up</button>
+          <button className="signup-btn" onClick={handleSignUp}>Sign Up</button>
 
           <p>OR</p>
           <button className="google-btn">

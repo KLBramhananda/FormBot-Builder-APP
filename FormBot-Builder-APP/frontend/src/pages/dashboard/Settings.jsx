@@ -55,7 +55,7 @@ const Settings = () => {
       }
 
       const response = await axios.put(
-        "http://localhost:5000/api/users/update",
+        `${process.env.REACT_APP_BACKEND_URL}/api/users/update`,
         updateData
       );
 

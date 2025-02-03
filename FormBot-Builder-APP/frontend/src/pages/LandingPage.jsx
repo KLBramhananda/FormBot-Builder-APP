@@ -6,7 +6,7 @@ import "./LandingPage.css";
 const LandingPage = () => {
   const fetchData = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/endpoint`);
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/endpoint`);
       const data = await response.json();
       console.log("Fetched Data:", data);
     } catch (error) {

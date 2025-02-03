@@ -2,7 +2,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: black;
+  background-color: transparent;
   padding: 0px 140px;
   color: white;
 }
@@ -87,4 +87,49 @@
 .navbar-right .btn-blue:hover {
   background-color: #ffff;
   color: black;
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    padding: 0 5px;
+    width: 100%;
+    overflow-x: hidden;
+    justify-content: space-between;
+  }
+
+  .navbar-left {
+    margin-left: 2px;
+    gap: 3px;
+  }
+
+  .navbar-logo {
+    width: 20px;
+    height: 20px;
+  }
+
+  .navbar-title {
+    font-size: 12px !important;
+  }
+
+  .navbar-right {
+    padding-left: 2px;
+    gap: 5px;
+    margin-right: 5px;
+    flex-shrink: 0;
+  }
+
+  .navbar-right .btn {
+    padding: 4px 8px;
+    font-size: 10px;
+    white-space: nowrap;
+    min-width: fit-content;
+  }
+
+  .navbar-right .btn-transparent {
+    margin-right: -65px !important;
+  }
+
+  .navbar-right .btn-blue {
+    margin-right: 5px;
+  }
 }
