@@ -34,26 +34,37 @@
     gap: 10px;
   }
 
-  .footer-section {
-    margin-bottom: 15px !important;
-    width: 100%;
-  }
-
-  /* Make the first section (logo section) span full width */
+  /* Make the first section (logo section) span full width and move to bottom */
   .footer-section:first-child {
     grid-column: 1 / -1;
-    text-align: center;
+    grid-row: 2;
+    text-align: left;
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: left;
+    justify-content: flex-start;
     gap: 10px;
-
+    margin-top: 20px;
+    padding-left: -5px;
   }
 
-  /* Adjust the remaining sections to 3 columns */
+  /* Adjust the remaining sections to top row */
   .footer-section:not(:first-child) {
+    grid-row: 1;
     padding: 0 5px;
+  }
+
+  .footer-logo {
+    margin: 0;
+    justify-content: flex-start;
+  }
+
+  .footer-text {
+    margin-top: 0 !important;
+    font-size: 10px;
+    white-space: nowrap;
+    text-align: left;
+    margin-left: 5px;
   }
 
   .footer h4 {
@@ -90,14 +101,10 @@
     margin-top: 0 !important;
     font-size: 10px;
     white-space: nowrap;
-    text-align: center;
+    text-align: left;
     br {
       display: none;
     }
-  }
-
-  .footer-logo {
-    margin: 0;
   }
 }
 
