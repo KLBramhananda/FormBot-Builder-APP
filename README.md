@@ -1,6 +1,5 @@
 # 🌟 FormBot – Builder - App 🌟
 
-![Screenshot 2024-12-20 130400](https://github.com/user-attachments/assets/fbcd23d0-2652-46b3-89ca-af7e40255301)
 
 ---
 
