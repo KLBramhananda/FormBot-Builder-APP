@@ -26,6 +26,10 @@ app.use(express.json());
 app.use('/api/share', shareRoutes);
 app.use('/api/users', userRoutes);
 
+app.get("/", (req, res) => {
+  res.send("Hello World!");
+});
+
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error('Error:', err);
