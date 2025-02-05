@@ -1,5 +1,6 @@
 # 🌟 FormBot – Builder - App 🌟
 
+![Screenshot 2024-12-20 130400](https://github.com/user-attachments/assets/da9493e0-d316-4c8a-93d0-7e15b4364063)
 
 ---
 
@@ -87,14 +88,10 @@ View form submissions live as users fill out and submit their forms.
 
 ---
 ## 📸 Screenshots
+![Screenshot 2024-12-20 130448](https://github.com/user-attachments/assets/c6ed0082-9521-4e97-8070-87b768b25174)
+![Screenshot 2025-01-06 120752](https://github.com/user-attachments/assets/9d2fa213-947b-46b5-8596-ad3ab83ccf5c)
 
-![image](https://github.com/user-attachments/assets/c1df423e-9a4c-4dee-a9a8-714c1363e5d6)
-![image](https://github.com/user-attachments/assets/6fdbc60d-9d52-41fa-a6c1-4c8f3c50c988)
-
-![Screenshot 2025-01-06 120816](https://github.com/user-attachments/assets/fb110018-7610-407e-8e4a-4b869aa65edd)
-![Screenshot 2025-01-06 122517](https://github.com/user-attachments/assets/5d778690-5a9d-4356-b9ca-c539c00d763a)
-![Screenshot 2025-01-06 121402](https://github.com/user-attachments/assets/8430cb24-f236-413d-9017-8ee06e5a66ff)
-
+![Screenshot 2025-01-06 122517](https://github.com/user-attachments/assets/51bd6b91-9303-4ec6-9091-95485658ce91)
 
 ---
 ## 💡 Contribution Guidelines
