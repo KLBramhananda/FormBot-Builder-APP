@@ -126,7 +126,8 @@
   }
 
   .navbar-right .btn-transparent {
-    margin-right: -65px !important;
+    margin-right: 5px !important;
+    margin-left: 70px;
   }
 
   .navbar-right .btn-blue {

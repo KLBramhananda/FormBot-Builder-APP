@@ -122,7 +122,9 @@ const LoginPage = () => {
             required
           />
           {error && <p className="error-message">{error}</p>}
-          <button className="login-btn" onClick={handleLogin}>Log In</button>
+          <button className="login-btn" onClick={handleLogin}>
+            Log In
+          </button>
           <p>OR</p>
           <button className="google-btn">
             <img src="./assets/logos/google-icon.jpeg" alt="" />

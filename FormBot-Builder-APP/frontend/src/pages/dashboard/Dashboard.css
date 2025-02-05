@@ -431,7 +431,8 @@ input:checked + .slider:before {
   .dashboard-actions {
     margin: 35px .7%;
     margin-right: 5px !important;
-    justify-content: center;
+    justify-content: left;
+    margin-left: 10px !important;
   }
 
   .dashboard-cards {

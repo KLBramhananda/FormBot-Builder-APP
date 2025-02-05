@@ -20,49 +20,80 @@ const Footer = () => {
         <p className="footer-text">
           Made with{" "}
           <FontAwesomeIcon icon={faHeart} style={{ color: "#fd0820" }} /> by{" "}
-          <br /> @Cuvette
+          <br /> @Bramha
         </p>
       </div>
       <div className="footer-section">
         <h4>Product</h4>
         <p>
           Status{" "}
-          <a href="#"><FontAwesomeIcon icon={faUpRightFromSquare} style={{ color: "#ffffff" }} /></a>
+          <button className="icon-button">
+            <FontAwesomeIcon
+              icon={faUpRightFromSquare}
+              style={{ color: "#ffffff" }}
+            />
+          </button>
         </p>
         <p>
           Documentation{" "}
-          <a href="#"><FontAwesomeIcon icon={faUpRightFromSquare} style={{ color: "#ffffff" }} /></a>
+          <button className="icon-button">
+            <FontAwesomeIcon
+              icon={faUpRightFromSquare}
+              style={{ color: "#ffffff" }}
+            />
+          </button>
         </p>
         <p>
           Roadmap{" "}
-          <a href="#"><FontAwesomeIcon icon={faUpRightFromSquare} style={{ color: "#ffffff" }} /></a>
+          <button className="icon-button">
+            <FontAwesomeIcon
+              icon={faUpRightFromSquare}
+              style={{ color: "#ffffff" }}
+            />
+          </button>
         </p>
-        <p>
-          Pricing
-        </p>
+        <p>Pricing</p>
       </div>
 
       <div className="footer-section">
         <h4>Community</h4>
         <p>
           Discord{" "}
-          <a href="#"><FontAwesomeIcon icon={faUpRightFromSquare} style={{ color: "#ffffff" }} /></a>
+          <button className="icon-button">
+            <FontAwesomeIcon
+              icon={faUpRightFromSquare}
+              style={{ color: "#ffffff" }}
+            />
+          </button>
         </p>
         <p>
           GitHub repository{" "}
-          <a href="#"><FontAwesomeIcon icon={faUpRightFromSquare} style={{ color: "#ffffff" }} /></a>
+          <button className="icon-button">
+            <FontAwesomeIcon
+              icon={faUpRightFromSquare}
+              style={{ color: "#ffffff" }}
+            />
+          </button>
         </p>
         <p>
           Twitter{" "}
-          <a href="#"><FontAwesomeIcon icon={faUpRightFromSquare} style={{ color: "#ffffff" }} /></a>
+          <button className="icon-button">
+            <FontAwesomeIcon
+              icon={faUpRightFromSquare}
+              style={{ color: "#ffffff" }}
+            />
+          </button>
         </p>
         <p>
           LinkedIn{" "}
-          <a href="#"><FontAwesomeIcon icon={faUpRightFromSquare} style={{ color: "#ffffff" }} /></a>
+          <button className="icon-button">
+            <FontAwesomeIcon
+              icon={faUpRightFromSquare}
+              style={{ color: "#ffffff" }}
+            />
+          </button>
         </p>
-        <p>
-          OSS Friends
-        </p>
+        <p>OSS Friends</p>
       </div>
 
       <div className="footer-section">
